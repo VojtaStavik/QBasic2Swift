@@ -1,0 +1,3 @@
+[submodule "SwiftParsec"]
+	path = SwiftParsec
+	url = https://github.com/VojtaStavik/SwiftParsec.git

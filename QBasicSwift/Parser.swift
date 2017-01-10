@@ -193,8 +193,30 @@ extension QBasicParser {
     
     // PRINT "Hey"
     func printCommand() -> StringParser<Statement?> {
-        return (spaces >>> Keyword.PRINT >>> spaces >>> expression <<< spaces <<< endOfLine
-            >>- { expression in return create(.print(expression)) })()
+        return attempt(spaces >>> Keyword.PRINT >>> spaces >>> many(attempt(printExpression)) >>- { prExp in
+            (optionMaybe(attempt(self.lineTerminator)) <<< spaces <<< endOfLine >>- { term in
+                create(.print(prExp, terminator: term ?? .newLine))
+            })
+        })()
+    }
+
+    // PRINT >>>"Somenting "; 5*(6+7); " something else." <<<
+    func printExpression() -> StringParser<(Operator?, Expression)> {
+        return (optionMaybe(attempt(textFormattingOperator)) >>- { op in
+            attempt(self.expression) >>- { exp in
+                return create((op, exp))
+            }
+        })()
+    }
+
+    func lineTerminator() -> StringParser<Statement.Terminator> {
+        return (attempt(textFormattingOperator <<< notFollowedBy(expression)) >>- { op in
+            if op == .comma {
+                return create(.tab)
+            } else {
+                return create(.none)
+            }
+        })()
     }
     
     // GOTO 10
@@ -289,7 +311,7 @@ extension QBasicParser {
     
     // REM Comment
     func remComment() -> StringParser<Statement?> {
-        return (spaces >>> Keyword.REM >>> manyTill(anyToken, endOfLine) >>- {
+        return (spaces >>> Keyword.REM >>> manyTill(anyChar, endOfLine) >>- {
             create(.comment(String($0)))
         })()
     }
@@ -326,8 +348,6 @@ extension QBasicParser {
                 <|> attempt(lessThan)
                 <|> attempt(greaterThan)
                 <|> attempt(modulo)
-                <|> attempt(comma)
-                <|> attempt(semicolon)
                 <|> attempt(multiplication)
                 <|> attempt(division)
             )()
@@ -365,19 +385,27 @@ extension QBasicParser {
         return (spaces >>> string("MOD") <<< spaces >>- { _ in create(.op(.modulo))})()
     }
     
-    func comma() -> StringParser<Literal> {
-        return (spaces >>> char(",") <<< spaces >>- { _ in create(.op(.comma))})()
-    }
-    
-    func semicolon() -> StringParser<Literal> {
-        return (spaces >>> char(";") <<< spaces >>- { _ in create(.op(.semicolon))})()
-    }
-    
     func multiplication() -> StringParser<Literal> {
         return (spaces >>> char("*") <<< spaces >>- { _ in create(.op(.multiplication))})()
     }
     
     func division() -> StringParser<Literal> {
         return (spaces >>> char("/") <<< spaces >>- { _ in create(.op(.division))})()
+    }
+    
+    // ; OR ,
+    
+    func textFormattingOperator() -> StringParser<Operator> {
+        return (
+            attempt(comma) <|> attempt(semicolon)
+        )()
+    }
+    
+    func comma() -> StringParser<Operator> {
+        return (spaces >>> char(",") <<< spaces >>- { _ in create(.comma)})()
+    }
+    
+    func semicolon() -> StringParser<Operator> {
+        return (spaces >>> char(";") <<< spaces >>- { _ in create(.semicolon)})()
     }
 }

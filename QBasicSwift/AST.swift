@@ -18,7 +18,13 @@ struct Block {
 }
 
 indirect enum Statement {
-    case print(Expression)
+    enum Terminator {
+        case none
+        case tab
+        case newLine
+    }
+    
+    case print([(Operator?, Expression)], terminator: Terminator)
     case forLoop(index: Variable, start: Expression, end: Expression, step: Expression, block: [Statement])
     case if_(expression: Expression, block: [Statement], elseBlock: [Statement])
     case assignment(Variable, Expression)

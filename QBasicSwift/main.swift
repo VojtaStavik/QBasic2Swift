@@ -21,7 +21,7 @@ func shell(_ command: String) -> Int32 {
 
 let parser = QBasicParser()
 
-let result = try! parse(parser.program, contentsOfFile: "/Users/vstavik/Documents/OSS/QBasicSwift/TestFiles/FizzBuzz.BAS")
+let result = try! parse(parser.program, contentsOfFile: "/Users/vstavik/Documents/OSS/QBasicSwift/TestFiles/QBT3_1.BAS")
 
 switch result {
 case let .left(err): print(err)

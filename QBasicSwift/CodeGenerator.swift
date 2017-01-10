@@ -16,7 +16,9 @@ struct CodeGenerator: Swiftable {
 
     let blocks: [Block]
 
-    static let nextLabelVariable = "nextLabel"
+    static let nextLabelVariable = "nextLabel__internal"
+    static let doneVariable = "done__internal"
+    
     
     static let programHeaders: String =
         "import Foundation\n" +
@@ -35,14 +37,14 @@ struct CodeGenerator: Swiftable {
     
     static let mainLoopStart: String =
         "// Main loop:\n" +
-        "var done = false\n" +
+        "var \(CodeGenerator.doneVariable) = false\n" +
         "repeat {\n" +
         "\tswitch \(CodeGenerator.nextLabelVariable) {\n"
         
     static let mainLoopEnd: String =
         "\tdefault:\n" +
         "\t\t// End of the program\n" +
-        "\t\tdone = true\n" +
+        "\t\t\(CodeGenerator.doneVariable) = true\n" +
         "\t\tbreak\n" +
         "\t}\n"
     
@@ -79,7 +81,7 @@ struct CodeGenerator: Swiftable {
         
         result += CodeGenerator.mainLoopEnd
         
-        result += "} while done == false\n" +
+        result += "} while \(CodeGenerator.doneVariable) == false\n" +
                   "\n\n"
 
 
@@ -108,8 +110,16 @@ extension Block: Swiftable {
 extension Statement: Swiftable {
     func toSwift(_ prefix: String = "") -> String {
         switch self {
-        case .print(let e):
-            return prefix + "print(\"\\(\(e.toSwift()))\")"
+        case .print(let e, let term):
+            var printExpressions = e.reduce("", { (result, element: (Operator?, Expression)) -> String in
+                return result + "\(element.0?.toSwift() ?? "")" + "\"\\(\(element.1.toSwift()))\""
+            })
+            
+            if printExpressions.isEmpty {
+                printExpressions = "\"\""
+            }
+            
+            return prefix + "print(\(printExpressions), separator: \"\", terminator: \(term.toSwift()))"
             
         case .assignment(let variable, let expression):
             return prefix + variable.toSwift() + " = " + expression.toSwift()
@@ -150,6 +160,19 @@ extension Statement: Swiftable {
         case .comment:
             // Comments are ignored
             return ""
+        }
+    }
+}
+
+extension Statement.Terminator: Swiftable {
+    func toSwift(_ prefix: String = "") -> String {
+        switch self {
+        case .none:
+            return prefix + "\"\""
+        case .tab:
+            return prefix + "\"\\t\""
+        case .newLine:
+            return prefix + "\"\\n\""
         }
     }
 }
@@ -222,7 +245,6 @@ extension String {
 
 extension Expression: Swiftable {
     func toSwift(_ prefix: String = "") -> String {
-        print("\(self)")
         switch self {
         case .literals(let l):
             return prefix + l.map{ $0.toSwift() }.joined(separator: "")

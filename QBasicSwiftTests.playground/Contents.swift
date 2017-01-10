@@ -1,5 +1,6 @@
 //: Playground - noun: a place where people can play
 
+
 import Foundation
 
 // Helper functions
@@ -16,33 +17,27 @@ func / (l: Int, r: Double) -> Double { return Double(l) / r }
 // Declarations:
 
 
-var nextLabel = ""
+var nextLabel__internal = ""
 // Main loop:
-var done = false
+var done__internal = false
 repeat {
-    switch nextLabel {
+    switch nextLabel__internal {
     case "":
-        for x in stride(from: 1, to: 100, by: 1) {
-            if x%15==0 {
-                print("\("FizzBuzz")")
-            } else {
-                if x%5==0 {
-                    print("\("Buzz")")
-                } else {
-                    if x%3==0 {
-                        print("\("Fizz")")
-                    } else {
-                        print("\(x)")
-                    }
-                }
-            }
-        }
+        // CLS is not implemented yet
+        print("\("QB")"+"\t"+"\("Tutorial")"+"\t"+"\("3")", separator: "", terminator: "\n")
+        print("\("QB ")"+"\("Tutorial ")"+"\("3")", separator: "", terminator: "\n")
+        print("\("Calcualtion")"+"\(4+5)", separator: "", terminator: "\n")
+        print("\("1")", separator: "", terminator: "")
+        print("\("2")", separator: "", terminator: "")
+        print("", separator: "", terminator: "\n")
+        print("\("next line")", separator: "", terminator: "\n")
         fallthrough
         
     default:
         // End of the program
-        done = true
+        done__internal = true
         break
     }
-} while done == false
+} while done__internal == false
+
 

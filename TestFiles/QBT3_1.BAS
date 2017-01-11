@@ -7,3 +7,5 @@ PRINT "1";
 PRINT "2";
 PRINT
 PRINT "next line"
+
+PRINT ,"Hey"

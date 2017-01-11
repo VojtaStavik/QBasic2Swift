@@ -40,14 +40,15 @@ extension QBasicParser {
     
     func statement() -> StringParser<Statement?> {
         return (
-            attempt(printCommand)
-                <|> attempt(comment)
-                <|> attempt(assignment)
+            attempt(comment)
+                <|> attempt(printCommand)
+                <|> attempt(declaration)
                 <|> attempt(forLoop)
                 <|> attempt(ifStatement)
                 <|> attempt(clsCommand)
-                <|> attempt(declaration)
                 <|> attempt(goto)
+                <|> attempt(inputCommand)
+                <|> attempt(assignment)
                 <|> attempt(emptyLine)
             )()
     }
@@ -123,24 +124,29 @@ extension QBasicParser {
 extension QBasicParser {
     
     // PRINT >>>text$<<<
-    func variable() -> StringParser<Variable> {
-        return (variableName >>- { name in
-            switch name.characters.last! {
-            case "$":
-                return create(.stringType(name: name, autodeclared: true))
-            case "%":
-                return create(.integerType(name: name, autodeclared: true))
-            case "&":
-                return create(.longType(name: name, autodeclared: true))
-            case "!":
-                return create(.singleType(name: name, autodeclared: true))
-            case "#":
-                return create(.doubleType(name: name, autodeclared: true))
-                
-            default:
-                return create(.local(name))
-            }
+    func variable(userDefined: Bool?) -> () -> StringParser<Variable> {
+        return {
+            return (self.variableName >>- { name in
+                var type: Variable.VarType?
+                switch name.characters.last! {
+                case "$":
+                    type = .string
+                case "%":
+                    type = .integer
+                case "&":
+                    type = .long
+                case "!":
+                    type = .single
+                case "#":
+                    type = .double
+                default:
+                    // Unknown type
+                    type = nil
+                }
+            
+                return create(Variable(name: name, type: type, userDefined: userDefined))
             })()
+        }
     }
     
     // PRINT >>>text<<<$
@@ -148,10 +154,15 @@ extension QBasicParser {
         return (letter >>- { firstLetter in
             many(alphaNum) >>- { nextChars in
                 option("", self.variableTypeString) >>- { varTypeString in
-                    create(String([firstLetter] + nextChars) + varTypeString)
+                    let variableName = String([firstLetter] + nextChars) + varTypeString
+                    if Keyword.all.contains(variableName) {
+                        return fail("Reserved keyword")
+                    }
+                    
+                    return create(String(variableName))
                 }
             }
-            })()
+        })()
     }
     
     func variableTypeString() -> StringParser<String> {
@@ -166,14 +177,14 @@ extension QBasicParser {
     //    PRINT "SchoolFreeware"
     //NEXT x
     func forLoop() -> StringParser<Statement?> {
-        return (spaces >>> Keyword.FOR >>> spaces >>> variableName <<< spaces >>- { varName in
+        return (spaces >>> Keyword.FOR >>> spaces >>> variable(userDefined: false) <<< spaces >>- { var_ in
             string("=") >>> spaces >>> self.expression <<< spaces >>- { start in
                 Keyword.TO >>> spaces >>> self.expression <<< spaces >>- { end in
                     option(Expression.literals([.numberInt("1")]), Keyword.STEP >>> spaces >>> self.expression)
                         <<< endOfLine >>- { step in
                             self.statements >>- { block in
-                                spaces >>> Keyword.NEXT >>> spaces >>> string(varName) >>- { _ in
-                                    create(.forLoop(index: .local(varName),
+                                spaces >>> Keyword.NEXT >>> spaces >>> string(var_.name) >>- { _ in
+                                    create(.forLoop(index: var_,
                                                     start: start,
                                                     end: end,
                                                     step: step,
@@ -216,6 +227,17 @@ extension QBasicParser {
             } else {
                 return create(.none)
             }
+            })()
+    }
+    
+    // INPUT "Whats your name? ", name$
+    func inputCommand() -> StringParser<Statement?> {
+        return attempt(spaces >>> Keyword.INPUT >>> spaces >>> optionMaybe(attempt(expression)) >>- { exp in
+            spaces >>> optionMaybe(attempt(self.textFormattingOperator)) >>- { term in
+                self.variable(userDefined: true) >>- { var_ in
+                    create(.input(text: exp, terminator: term, variable: var_))
+                }
+            }
         })()
     }
     
@@ -235,22 +257,22 @@ extension QBasicParser {
         return (spaces >>> Keyword.DIM >>> spaces >>> variableName <<< spaces >>- { varName in
             Keyword.AS >>> space >>- { _ in
                 attempt(Keyword.INTEGER) <<< spaces <<< endOfLine >>- { _ in
-                    return create(.declaration(.integerType(name: varName, autodeclared: false)))
-                    }
-                    <|> attempt(Keyword.LONG <<< spaces <<< endOfLine) >>- { _ in
-                        return create(.declaration(.longType(name: varName, autodeclared: false)))
-                    }
-                    <|> attempt(Keyword.SINGLE <<< spaces <<< endOfLine) >>- { _ in
-                        return create(.declaration(.singleType(name: varName, autodeclared: false)))
-                    }
-                    <|> attempt(Keyword.DOUBLE <<< spaces <<< endOfLine) >>- { _ in
-                        return create(.declaration(.doubleType(name: varName, autodeclared: false)))
-                    }
-                    <|> attempt(Keyword.STRING <<< spaces <<< endOfLine) >>- { _ in
-                        return create(.declaration(.stringType(name: varName, autodeclared: false)))
+                    return create(.declaration(Variable(name: varName, type: .integer, userDefined: true)))
+                }
+                <|> attempt(Keyword.LONG <<< spaces <<< endOfLine) >>- { _ in
+                    return create(.declaration(Variable(name: varName, type: .long, userDefined: true)))
+                }
+                <|> attempt(Keyword.SINGLE <<< spaces <<< endOfLine) >>- { _ in
+                    return create(.declaration(Variable(name: varName, type: .single, userDefined: true)))
+                }
+                <|> attempt(Keyword.DOUBLE <<< spaces <<< endOfLine) >>- { _ in
+                    return create(.declaration(Variable(name: varName, type: .double, userDefined: true)))
+                }
+                <|> attempt(Keyword.STRING <<< spaces <<< endOfLine) >>- { _ in
+                    return create(.declaration(Variable(name: varName, type: .string, userDefined: true)))
                 }
             }
-            })()
+        })()
     }
     
 
@@ -298,7 +320,7 @@ extension QBasicParser {
 
     // T$ = "Test"
     func assignment() -> StringParser<Statement?> {
-        return ((spaces >>> variable <<< spaces <<< string("=") <<< spaces) >>- { var_ in
+        return ((spaces >>> variable(userDefined: true) <<< spaces <<< string("=") <<< spaces) >>- { var_ in
             self.expression <<< endOfLine >>- { exp in
                 create(.assignment(var_, exp))
             }
@@ -330,7 +352,7 @@ extension QBasicParser {
     func expression() -> StringParser<Expression> {
         return (
             attempt(literals) >>- { create(.literals($0)) }
-                <|> attempt(variable) >>- { create(.variable($0))}
+                <|> attempt(variable(userDefined: nil)) >>- { create(.variable($0))}
             )()
     }
 }

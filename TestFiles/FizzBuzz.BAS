@@ -9,7 +9,7 @@ FOR x = 1 TO 100
                 PRINT "Fizz"
             ELSE
                 PRINT x
-            ENDIF
-        ENDIF
-    ENDIF
+            END IF
+        END IF
+    END IF
 NEXT x

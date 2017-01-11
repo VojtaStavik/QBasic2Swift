@@ -10,6 +10,9 @@ import Foundation
 
 struct Program {
     let elements: [Statement]
+    
+    typealias VariableName = String
+    static var globalVarsPool: [VariableName: Variable.VarType?] = [:]
 }
 
 struct Block {
@@ -30,6 +33,7 @@ indirect enum Statement {
     case assignment(Variable, Expression)
     case declaration(Variable)
     case goto(label: Label)
+    case input(text: Expression?, terminator: Operator?, variable: Variable)
     case cls
     case comment(String)
 }
@@ -40,21 +44,65 @@ indirect enum Expression {
     case variable(Variable)
 }
 
-enum Variable {
-    case stringType(name: String, autodeclared: Bool)
-    case integerType(name: String, autodeclared: Bool)
-    case longType(name: String, autodeclared: Bool)
-    case singleType(name: String, autodeclared: Bool)
-    case doubleType(name: String, autodeclared: Bool)
+struct Variable {
+    let name: String
+    let type: VarType?
+    let userDefined: Bool?
     
+    init(name: String, type: VarType?, userDefined: Bool?) {
+
+        self.name = name
+        self.userDefined = userDefined
+        
+        guard let userDefined = userDefined else {
+            // We don't know if var is user defined or not, nothing to do here
+            self.type = type
+            return
+        }
+        
+        guard userDefined else {
+            // Var is not user defined, nothing to do here
+            self.type = nil
+            return
+        }
+
+        if let type = type {
+            // We know the type
+            
+            // Check if the existing type matches the current one
+            if let existingType = Program.globalVarsPool[name] {
+                if existingType != type {
+                    fatalError("Variable declared multiple times with diferent type.")
+                }
+            } else {
+                // Save the type to the pool
+                Program.globalVarsPool[name] = type
+            }
+            
+            self.type = type
+            
+        } else {
+            // Fetch existing type
+            if let existingType = Program.globalVarsPool[name] {
+                self.type = existingType
+            } else {
+                fatalError("Variable used without prior declaration")
+            }
+        }
+    }
     
-    case local(String)
+    enum VarType {
+        case string
+        case integer
+        case long
+        case single
+        case double
+    }
 }
 
 extension Variable: Hashable {
     public var hashValue: Int {
-        let multiplexer = self.isAutodecalared ? 13 : 1
-        return self.name.hashValue % multiplexer
+        return name.hashValue / (userDefined ?? false ? 13 : 1)
     }
 }
 
@@ -112,7 +160,7 @@ struct Keyword {
     static func IF() -> StringParser<String>        { return string("IF")() }
     static func THEN() -> StringParser<String>      { return string("THEN")() }
     static func ELSE() -> StringParser<String>      { return string("ELSE")() }
-    static func ENDIF() -> StringParser<String>     { return string("ENDIF")() }
+    static func ENDIF() -> StringParser<String>     { return string("END IF")() }
     static func DIM() -> StringParser<String>       { return string("DIM")() }
     static func AS() -> StringParser<String>        { return string("AS")() }
     static func INTEGER() -> StringParser<String>   { return string("INTEGER")() }
@@ -122,4 +170,28 @@ struct Keyword {
     static func STRING() -> StringParser<String>    { return string("STRING")() }
     static func GOTO() -> StringParser<String>      { return string("GOTO")() }
     static func REM() -> StringParser<String>       { return string("REM")() }
+    static func INPUT() -> StringParser<String>     { return string("INPUT")() }
+    
+    static let all: [String] = [
+        "PRINT",
+        "CLS",
+        "FOR",
+        "TO",
+        "STEP",
+        "NEXT",
+        "IF",
+        "THEN",
+        "ELSE",
+        "END",
+        "DIM",
+        "AS",
+        "INTEGER",
+        "LONG",
+        "SINGLE",
+        "DOUBLE",
+        "STRING",
+        "GOTO",
+        "REM",
+        "INPUT",
+    ]
 }

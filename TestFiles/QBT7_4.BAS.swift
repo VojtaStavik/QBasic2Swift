@@ -1,7 +1,4 @@
-//: Playground - noun: a place where people can play
-
-
-
+#!/usr/bin/env xcrun swift
 
 import Foundation
 
@@ -35,36 +32,38 @@ var nextLabel__internal = ""
 // Main loop:
 var done__internal = false
 repeat {
-    switch nextLabel__internal {
-    case "":
-        // CLS is not implemented yet
-        print("Enter First Integer: ", terminator: "")
-        let _ = {
-            let input = readLine() ?? ""
-            Num1__int = Int(input) ?? 0
-        }()
-        
-        print("Enter Second Integer: ", separator: "", terminator: "")
-        let _ = {
-            let input = readLine() ?? ""
-            Num2__int = Int(input) ?? 0
-        }()
-        
-        if Num1__int>Num2__int {
-            print("\(Num1__int)"+"\("Is Greater Than")"+"\(Num2__int)", separator: "", terminator: "\n")
-        } else {
-            if Num2__int>Num1__int {
-                print("\(Num2__int)"+"\("Is Greater Than")"+"\(Num1__int)", separator: "", terminator: "\n")
-            } else {
-                print("\("The Numbers Are The Same")", separator: "", terminator: "\n")
-            }
-        }
-        fallthrough
-        
-    default:
-        // End of the program
-        done__internal = true
-        break
-    }
+	switch nextLabel__internal {
+	case "":
+		// CLS is not implemented yet
+		print("Enter First Integer: ", terminator: "")
+		let _ = {
+			let input = readLine() ?? ""
+			Num1__int = Int(input) ?? 0
+		}()
+
+		print("Enter Second Integer: ", separator: "", terminator: "")
+		let _ = {
+			let input = readLine() ?? ""
+			Num2__int = Int(input) ?? 0
+		}()
+
+		if Num1__int>Num2__int {
+			print("\(Num1__int)"+"\("Is Greater Than")"+"\(Num2__int)", separator: "", terminator: "\n")
+		} else {
+			if Num2__int>Num1__int {
+				print("\(Num2__int)"+"\("Is Greater Than")"+"\(Num1__int)", separator: "", terminator: "\n")
+			} else {
+				print("\("The Numbers Are The Same")", separator: "", terminator: "\n")
+			}
+		}
+		fallthrough
+
+	default:
+		// End of the program
+		done__internal = true
+		break
+	}
 } while done__internal == false
+
+
 

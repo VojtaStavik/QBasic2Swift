@@ -28,9 +28,9 @@ IF A1$ = "Hello" THEN
         PRINT "2 Is Less Than 5"
     ELSE
         PRINT "2 is greater than 5"
-    ENDIF
+    END IF
 
-ENDIF
+END IF
 
 FOR x = 1 TO 5 STEP 2
     PRINT "loop1_1"

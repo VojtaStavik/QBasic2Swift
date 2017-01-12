@@ -14,13 +14,21 @@ let file: String
 if CommandLine.arguments.count > 1 {
     file = CommandLine.arguments[1]
 } else {
-    file = "/Users/vstavik/Documents/OSS/QBasicSwift/TestFiles/FizzBuzz.BAS"
+    file = "/Users/vstavik/Documents/OSS/QBasicSwift/TestFiles/QBT37_2.BAS"
 }
 
-let result = try! parse(parser.program, contentsOfFile: file)
+do {
 
-switch result {
-case let .left(err): print(err)
-case let .right(blocks):
-    print(CodeGenerator(blocks: blocks).toSwift())
+    let result = try parse(parser.program, contentsOfFile: file)
+    
+    switch result {
+    case let .left(err): print(err)
+    case let .right(blocks):
+        print(blocks)
+        print(CodeGenerator(blocks: blocks).toSwift())
+    }
+
+} catch {
+    print(error)
 }
+

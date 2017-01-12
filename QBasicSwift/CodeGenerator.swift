@@ -46,72 +46,156 @@ struct CodeGenerator: Swiftable {
             "func != (l: Int, r: Double) -> Bool { return Double(l) != r }\n" +
             "\n\n"
     
-    static let mainLoopStart: String =
-        "// Main loop:\n" +
-        "var \(CodeGenerator.doneVariable) = false\n" +
-        "repeat {\n" +
-        "\tswitch \(CodeGenerator.nextLabelVariable) {\n"
-        
-    static let mainLoopEnd: String =
-        "\tdefault:\n" +
-        "\t\t// End of the program\n" +
-        "\t\t\(CodeGenerator.doneVariable) = true\n" +
-        "\t\tbreak\n" +
-        "\t}\n"
-    
     func toSwift(_ prefix: String = "") -> String {
         
         var result = CodeGenerator.programHeaders
         
-        let variablesNeededDeclaration = Program.globalVarsPool.map { (name, type) -> Variable in
-            return Variable(name: name, type: type, userDefined: nil)
+        let globalVars = Program.globalVarsPool
+            .flatMap { (name, info) -> Variable? in
+                if info.defType == .user {
+                    return Variable(name: name, type: info.type, definedBy: info.defType)
+                } else {
+                    return nil
+                }
+            }
+
+        if globalVars.isEmpty == false {
+            result += "// Global vars declaration\n" +
+                globalVars.map{ $0.declaration() }.joined(separator: "\n") +
+            "\n\n"
         }
 
-        result += "// Declarations:\n" +
-                    variablesNeededDeclaration.map{ $0.declaration() }.joined(separator: "\n") +
-                    "\n\n"
-        
-        let mainLabelName = blocks.first!.label.toSwift("")
-        
-        result += "var \(CodeGenerator.nextLabelVariable) = \(mainLabelName)\n\n"
-        result += CodeGenerator.mainLoopStart
-        
-        blocks.forEach {
-            result += $0.toSwift("\t")
+        if Program.subs.isEmpty == false {
+            result +=   "// Subs\n"
+            Program.subs.forEach {
+                result += $0.toSwift()
+            }
         }
-        
-        result += CodeGenerator.mainLoopEnd
-        
-        result += "} while \(CodeGenerator.doneVariable) == false\n" +
-                  "\n\n"
 
+        // Main loop
+        result +=   "_ = {\n"
 
+        let mainLoopVars = Program.mainLoopVarsPool
+            .flatMap { (name, info) -> Variable? in
+                if info.defType == .user {
+                    return Variable(name: name, type: info.type, definedBy: info.defType)
+                } else {
+                    return nil
+                }
+            }
+
+        if mainLoopVars.isEmpty == false {
+            result += "\t// Main loop vars declaration\n" +
+                mainLoopVars.map{ $0.declaration("\t") }.joined(separator: "\n") +
+            "\n"
+        }
+
+        result += RunLoop(blocks: blocks, identifier: "main").toSwift("\t")
+        
+        result += "}()\n"
+        
         return result
     }
 }
 
+struct RunLoop: Swiftable {
+    let blocks: [Block]
+    let identifier: String
+    
+    var firstBlockLabel: String {
+        if let name = blocks.first?.label.name {
+            if name.isEmpty {
+                return "\"\""
+            } else {
+                return name
+            }
+        } else {
+            return "\"\""
+        }
+    }
+    
+    var doneVarName: String { return identifier + "LoopDone__internal" }
+    var nextLabelVarName: String { return identifier + "NextLabel__internal" }
+    
+    func loopStart(_ prefix: String) -> String {
+        return [
+            "// \(identifier) loop:",
+            "var \(nextLabelVarName) = \(firstBlockLabel)",
+            "var \(doneVarName) = false",
+            "repeat {",
+            "\tswitch \(nextLabelVarName) {"
+        ].map { prefix + $0 }.joined(separator: "\n")
+    }
+
+    func loopEnd(_ prefix: String) -> String {
+        return [
+            "\tdefault:",
+            "\t\t\(doneVarName) = true",
+            "\t}",
+            "} while \(doneVarName) == false",
+            ""
+        ].map { prefix + $0 }.joined(separator: "\n")
+    }
+
+    func toSwift(_ prefix: String = "") -> String {
+        
+        if blocks.count > 1 {
+            // Needs interpretation using Swift
+            var result = "\n" + loopStart(prefix)
+            
+            result += "\n"
+            
+            blocks.forEach {
+                result += $0.toSwift("\t\t", loopNextLabelVarName: nextLabelVarName)
+            }
+            
+            result += "\n"
+            
+            result += loopEnd(prefix)
+            return result
+        } else {
+            // No Switch needed
+            return "\n" + (blocks.first?.toSwiftWithoutSwitch(prefix, loopNextLabelVarName: nextLabelVarName) ?? "")
+        }
+    }
+}
+
+
+
 extension Block: Swiftable {
     
-    func toSwift(_ prefix: String = "") -> String {
+    internal func toSwift(_ prefix: String) -> String {
+        return toSwift(prefix, loopNextLabelVarName: "")
+    }
+    
+    func toSwift(_ prefix: String = "",  loopNextLabelVarName name: String) -> String {
         var result = prefix + "case \(label.toSwift("")):\n"
         
-        result += statements.map { $0.toSwift(prefix + "\t") }
-            .filter { $0.isEmpty == false }
-            .joined(separator: "\n") + "\n"
+        result += toSwiftWithoutSwitch(prefix + "\t", loopNextLabelVarName: name)
         
         if case .goto(_)? = statements.last {
             // Do nothing, just the new line
             result += "\n"
         } else {
-            result += prefix + "\tfallthrough\n\n"
+            result += prefix + "\tfallthrough\n"
         }
         
         return result
     }
+    
+    func toSwiftWithoutSwitch(_ prefix: String = "", loopNextLabelVarName name: String) -> String {
+        return statements.map { $0.toSwift(prefix, loopNextLabelVarName: name) }
+            .filter { $0.isEmpty == false }
+            .joined(separator: "\n") + "\n"
+    }
 }
 
 extension Statement: Swiftable {
-    func toSwift(_ prefix: String = "") -> String {
+    internal func toSwift(_ prefix: String) -> String {
+        return toSwift(prefix, loopNextLabelVarName: "")
+    }
+
+    func toSwift(_ prefix: String = "", loopNextLabelVarName: String) -> String {
         switch self {
         case .print(let e, let term):
             var printExpressions = e.reduce("", { (result, element: (op: Operator?, exp: Expression)) -> String in
@@ -180,7 +264,7 @@ extension Statement: Swiftable {
                 prefix + "}"
             
         case .if_(expression: let exp, block: let block, elseBlock: let elseBlock, elseIf: let elseif):
-            let blockCode = block.map { $0.toSwift(prefix + "\t") + "\n" }.joined()
+            let blockCode = block.map { $0.toSwift(prefix + "\t", loopNextLabelVarName: loopNextLabelVarName) + "\n" }.joined()
             var result = prefix + "if " + exp.toSwift() + " {\n" +
                 blockCode +
                 prefix + "}"
@@ -219,11 +303,26 @@ extension Statement: Swiftable {
             
         case .goto(label: let l):
             return
-                prefix + CodeGenerator.nextLabelVariable + " = " + l.toSwift("") + "\n" +
+                prefix + loopNextLabelVarName + " = " + l.toSwift("") + "\n" +
                     prefix + "continue"
             
         case .comment:
             // Comments are ignored
+            return ""
+            
+        case .subInvocation(let sub, parameters: let params):
+            let paramNames = sub.params.map { $0.name }
+            
+            assert(params.count == paramNames.count, "Function \(sub.name) called with \(params.count) parameters but declared with \(paramNames.count).")
+
+            var paramsAndValues: [String] = []
+            params.enumerated().forEach({ (index, parameter) in
+                paramsAndValues.append(paramNames[index].sanitizedVariableName + ": " + parameter.toSwift())
+            })
+            
+            return prefix + "\(sub.name.sanitizedVariableName)(\(paramsAndValues.joined(separator: ", "))"
+            
+        default:
             return ""
         }
     }
@@ -242,6 +341,33 @@ extension Statement.Terminator: Swiftable {
     }
 }
 
+extension Sub: Swiftable {
+    func toSwift(_ prefix: String = "") -> String {
+        
+        let localVars = varPool.flatMap { (name, info) -> Variable? in
+                            if info.defType == .user {
+                                return Variable(name: name, type: info.type, definedBy: info.defType)
+                            } else {
+                                return nil
+                            }
+                        }
+        
+        var result = prefix + "func \(name)(\( params.map{ $0.asParameter() }.joined(separator: ", "))) -> Void {\n"
+        
+        if localVars.isEmpty == false {
+            result += "\t// Local vars declaration\n" +
+                localVars.map{ $0.declaration(prefix + "\t") }.joined(separator: "\n") +
+            "\n"
+        }
+        
+        result += RunLoop(blocks: blocks ?? [], identifier: name).toSwift("\t")
+        
+        result += "}\n\n"
+
+        return result
+    }
+}
+
 extension Variable: Swiftable {
     func toSwift(_ prefix: String = "") -> String {
         return prefix + name.sanitizedVariableName
@@ -253,12 +379,31 @@ extension Variable: Swiftable {
         }
         
         switch type {
-        case .integer, .long:
-            return prefix + "var \(toSwift()): Int = 0"
-        case .single, .double:
-            return prefix + "var \(toSwift()): Double = 0"
+        case .integer, .long,
+             .single, .double:
+            return prefix + "var \(toSwift()): \(typeName) = 0"
+        
         case .string:
-            return prefix + "var \(toSwift()): String = \"\""
+            return prefix + "var \(toSwift()): \(typeName) = \"\""
+        }
+    }
+    
+    func asParameter(_ prefix: String = "") -> String {
+        return prefix + toSwift() + ": " + typeName
+    }
+    
+    var typeName: String {
+        guard let type = type else {
+            fatalError("Trying to use var without type")
+        }
+        
+        switch type {
+        case .integer, .long:
+            return "Int"
+        case .single, .double:
+            return "Double"
+        case .string:
+            return "String"
         }
     }
 }
@@ -288,7 +433,7 @@ extension Expression: Swiftable {
 extension Literal: Swiftable {
     func toSwift(_ prefix: String = "") -> String {
         switch self {
-        case .vaiableName(let s):
+        case .vaiableName(let s), .subName(let s):
             return prefix + s.sanitizedVariableName
         case .string(let s):
             return prefix + "\"\(s)\""

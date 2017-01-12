@@ -23,37 +23,20 @@ func != (l: Double, r: Int) -> Bool { return l != Double(r) }
 func != (l: Int, r: Double) -> Bool { return Double(l) != r }
 
 
-// Declarations:
+// Subs
+func DoubleNum(Number: Int) -> Void {
+    print("\("The Number Doubled: ")"+"\(Number*2)", terminator: "\n")
+}
 
-
-var nextLabel__internal = ""
-
-// Main loop:
-var done__internal = false
-repeat {
-    switch nextLabel__internal {
-    case "":
-        for x in stride(from: 1, to: 100, by: 1) {
-            if x%15==0 {
-                print("\("FizzBuzz")", separator: "", terminator: "\n")
-            } else {
-                if x%5==0 {
-                    print("\("Buzz")", separator: "", terminator: "\n")
-                } else {
-                    if x%3==0 {
-                        print("\("Fizz")", separator: "", terminator: "\n")
-                    } else {
-                        print("\(x)", separator: "", terminator: "\n")
-                    }
-                }
-            }
-        }
-        fallthrough
-        
-    default:
-        // End of the program
-        done__internal = true
-        break
-    }
-} while done__internal == false
-
+_ = {
+    // Main loop vars declaration
+    var Num1: Int = 0
+    // CLS is not implemented yet
+    print("Enter An Integer To Double: ", terminator: "")
+    let _ = {
+        let input = readLine() ?? ""
+        Num1 = Int(input) ?? 0
+    }()
+    
+    DoubleNum(Number: Num1)
+}()

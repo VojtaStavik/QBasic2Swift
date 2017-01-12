@@ -8,11 +8,20 @@
 
 import Foundation
 
+typealias VariableName = String
+typealias SubName = String
+typealias VarInfo = (type: Variable.VarType?, defType: Variable.DefinitionType?)
+
 struct Program {
     let elements: [Statement]
     
-    typealias VariableName = String
-    static var globalVarsPool: [VariableName: Variable.VarType?] = [:]
+    // Vars defined with SHARED keyword
+    static var globalVarsPool: [VariableName: VarInfo] = [:]
+    
+    // Default scope
+    static var mainLoopVarsPool: [VariableName: VarInfo] = [:]
+    
+    static var subs: Set<Sub> = []
 }
 
 struct Block {
@@ -36,6 +45,11 @@ indirect enum Statement {
     case input(text: Expression?, terminator: Operator?, variable: Variable)
     case cls
     case comment(String)
+    
+    // Subs
+    case subDeclaration(Sub, parameters: [Variable])
+    case subInvocation(Sub, parameters: [Expression])
+    case subImplementation(Sub)
 }
 
 
@@ -47,46 +61,65 @@ indirect enum Expression {
 struct Variable {
     let name: String
     let type: VarType?
-    let userDefined: Bool?
+    let definedBy: DefinitionType?
     
-    init(name: String, type: VarType?, userDefined: Bool?) {
+    init(name: String, type: VarType?, definedBy: DefinitionType?, scope: SubName? = nil) {
 
         self.name = name
-        self.userDefined = userDefined
         
-        guard let userDefined = userDefined else {
+        guard let definedBy_ = definedBy else {
             // We don't know if var is user defined or not, nothing to do here
             self.type = type
+            self.definedBy = definedBy
             return
         }
         
-        guard userDefined else {
+        if case .system = definedBy_ {
             // Var is not user defined, nothing to do here
             self.type = nil
+            self.definedBy = definedBy
             return
         }
-
+        
+        var varPool: [VariableName :VarInfo] {
+            get { return scope == nil ? Program.mainLoopVarsPool : Program.subs.filter{ $0.name == scope! }
+                                                                            .first!
+                                                                            .varPool
+            }
+            set {
+                if scope == nil {
+                    Program.mainLoopVarsPool = newValue
+                } else {
+                    var sub = Program.subs.filter{ $0.name == scope! }.first!
+                    sub.varPool = newValue
+                    Program.subs.update(with: sub)
+                }
+            }
+        }
+        
         if let type = type {
             // We know the type
             
             // Check if the existing type matches the current one
-            if let existingType = Program.globalVarsPool[name] {
+            if let existingType = varPool[name]?.type {
                 if existingType != type {
-                    fatalError("Variable declared multiple times with diferent type.")
+                    fatalError("Variable \(name) declared multiple times with diferent type.")
                 }
             } else {
                 // Save the type to the pool
-                Program.globalVarsPool[name] = type
+                varPool[name] = (type, definedBy_)
             }
             
             self.type = type
+            self.definedBy = definedBy_
             
         } else {
             // Fetch existing type
-            if let existingType = Program.globalVarsPool[name] {
-                self.type = existingType
+            if let existingType = varPool[name] {
+                self.type = existingType.type
+                self.definedBy = existingType.defType
             } else {
-                fatalError("Variable used without prior declaration")
+                fatalError("Variable \(name) used without prior declaration")
             }
         }
     }
@@ -98,17 +131,78 @@ struct Variable {
         case single
         case double
     }
+    
+    enum DefinitionType {
+        case user
+        case system
+        case parameter
+    }
 }
 
 extension Variable: Hashable {
     public var hashValue: Int {
-        return name.hashValue / (userDefined ?? false ? 13 : 1)
+        let salt: Int
+        switch definedBy {
+        case .user?:
+            salt = 13
+        case .parameter?:
+            salt = 21
+        default:
+            salt = 1
+        }
+        return name.hashValue / salt
     }
 }
 
 extension Variable: Equatable {
     static func == (l: Variable, r: Variable) -> Bool {
         return (l.hashValue == r.hashValue)
+    }
+}
+
+struct Sub {
+    let name: SubName
+    var blocks: [Block]?
+    var varPool: [VariableName: VarInfo] = [:]
+    
+    init(name: SubName, blocks: [Block]?) {
+        self.name = name
+        
+        if let existing = Program.subs.filter({ $0.name == name }).first {
+            self.blocks = blocks ?? existing.blocks
+            self.varPool = existing.varPool
+            Program.subs.update(with: self)
+        } else {
+            self.blocks = blocks
+            Program.subs.insert(self)
+        }
+    }
+    
+    /// Return existing sub or nil
+    static func existing(withName name: SubName) -> Sub? {
+        return Program.subs.filter { $0.name == name }.first
+    }
+    
+    var params: [Variable] {
+        return varPool.flatMap { (name, info) -> Variable? in
+            if info.defType == .parameter {
+                return Variable(name: name, type: info.type, definedBy: info.defType)
+            } else {
+                return nil
+            }
+        }
+    }
+}
+
+extension Sub: Hashable {
+    var hashValue: Int {
+        return name.hashValue
+    }
+}
+
+extension Sub: Equatable {
+    static func == (l: Sub, r: Sub) -> Bool {
+        return l.name == r.name
     }
 }
 
@@ -129,6 +223,7 @@ extension Label: Swiftable {
 
 indirect enum Literal {
     case vaiableName(String)
+    case subName(String)
     case string(String)
     case numberInt(String)
     case numberFloat(String)
@@ -172,6 +267,9 @@ struct Keyword {
     static func GOTO() -> StringParser<String>      { return string("GOTO")() }
     static func REM() -> StringParser<String>       { return string("REM")() }
     static func INPUT() -> StringParser<String>     { return string("INPUT")() }
+    static func DECLARE() -> StringParser<String>   { return string("DECLARE")() }
+    static func SUB() -> StringParser<String>       { return string("SUB")() }
+    static func ENDSUB() -> StringParser<String>    { return string("END SUB")() }
     
     static let all: [String] = [
         "PRINT",
@@ -195,5 +293,7 @@ struct Keyword {
         "GOTO",
         "REM",
         "INPUT",
+        "DECLARE",
+        "SUB",
     ]
 }

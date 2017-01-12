@@ -100,11 +100,17 @@ extension QBasicParser {
     func ifStatementFull() -> StringParser<Statement?> {
         return (spaces >>> Keyword.IF >>> spaces >>> expression <<< spaces <<< Keyword.THEN <<< endOfLine >>- { exp in
             self.statements >>- { ifBlock in
-                option([Statement](), attempt(spaces >>> Keyword.ELSE) >>> endOfLine >>> spaces >>> self.statements) >>- { elseBlock in
+                // ELSE block
+                attempt((optionMaybe(attempt(spaces >>> Keyword.ELSE) >>> endOfLine >>> spaces >>> self.statements) >>- { elseBlock in
                     spaces >>> Keyword.ENDIF >>- { _ in
-                        create(.if_(expression: exp, block: ifBlock, elseBlock: elseBlock))
+                        create(.if_(expression: exp, block: ifBlock, elseBlock: elseBlock, elseIf: nil))
                     }
-                }
+                })) <|>
+                // ELSEIF
+                    // This consumes the 'ELSE' part of ELSEIF, the IF part is consumed by isStatement parser
+                (attempt(spaces >>> Keyword.ELSE) >>> self.ifStatement >>- { elseIf in
+                    create(.if_(expression: exp, block: ifBlock, elseBlock: nil, elseIf: elseIf))
+                })
             }
         })()
     }
@@ -113,7 +119,7 @@ extension QBasicParser {
     func ifStatementSimple() -> StringParser<Statement?> {
         return (spaces >>> Keyword.IF >>> spaces >>> expression <<< spaces <<< Keyword.THEN >>- { exp in
             spaces >>> self.statement <<< spaces <<< endOfLine >>- { com in
-                create(Statement.if_(expression: exp, block: [com!], elseBlock: []))
+                create(Statement.if_(expression: exp, block: [com!], elseBlock: [], elseIf: nil))
             }
         })()
     }
@@ -127,7 +133,7 @@ extension QBasicParser {
     func variable(userDefined: Bool?) -> () -> StringParser<Variable> {
         return {
             return (self.variableName >>- { name in
-                var type: Variable.VarType?
+                let type: Variable.VarType?
                 switch name.characters.last! {
                 case "$":
                     type = .string

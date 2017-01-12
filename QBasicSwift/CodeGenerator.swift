@@ -127,7 +127,7 @@ extension Statement: Swiftable {
                 printExpressions = "\"\""
             }
             
-            return prefix + "print(\(printExpressions), separator: \"\", terminator: \(term.toSwift()))"
+            return prefix + "print(\(printExpressions), terminator: \(term.toSwift()))"
             
         case .input(text: let exp, terminator: let term, variable: let var_):
             
@@ -179,14 +179,30 @@ extension Statement: Swiftable {
                 blockCode +
                 prefix + "}"
             
-        case .if_(expression: let exp, block: let block, elseBlock: let elseBlock):
+        case .if_(expression: let exp, block: let block, elseBlock: let elseBlock, elseIf: let elseif):
             let blockCode = block.map { $0.toSwift(prefix + "\t") + "\n" }.joined()
             var result = prefix + "if " + exp.toSwift() + " {\n" +
                 blockCode +
                 prefix + "}"
             
-            if elseBlock.isEmpty == false {
-                let blockCode = elseBlock.map { $0.toSwift(prefix + "\t") + "\n" }.joined()
+            if elseBlock != nil && elseif != nil {
+                fatalError("If statement can't have both elseBlock and elseIf.")
+            }
+
+            if elseBlock == nil && elseif == nil {
+                return result
+            }
+            
+            let finalElseBlock: [Statement]
+            
+            if let elseIfStatement = elseif {
+                finalElseBlock = [elseIfStatement]
+            } else {
+                finalElseBlock = elseBlock!
+            }
+            
+            if finalElseBlock.isEmpty == false {
+                let blockCode = finalElseBlock.map { $0.toSwift(prefix + "\t") + "\n" }.joined()
                 result += " else {\n" +
                     blockCode +
                     prefix + "}"

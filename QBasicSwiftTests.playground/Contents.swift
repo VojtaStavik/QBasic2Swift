@@ -1,8 +1,5 @@
 //: Playground - noun: a place where people can play
 
-
-
-
 import Foundation
 
 // Because QBasic is not that strict about types, we need these helper functions
@@ -27,8 +24,7 @@ func != (l: Int, r: Double) -> Bool { return Double(l) != r }
 
 
 // Declarations:
-var Num1__int: Int = 0
-var Num2__int: Int = 0
+
 
 var nextLabel__internal = ""
 
@@ -37,26 +33,19 @@ var done__internal = false
 repeat {
     switch nextLabel__internal {
     case "":
-        // CLS is not implemented yet
-        print("Enter First Integer: ", terminator: "")
-        let _ = {
-            let input = readLine() ?? ""
-            Num1__int = Int(input) ?? 0
-        }()
-        
-        print("Enter Second Integer: ", separator: "", terminator: "")
-        let _ = {
-            let input = readLine() ?? ""
-            Num2__int = Int(input) ?? 0
-        }()
-        
-        if Num1__int>Num2__int {
-            print("\(Num1__int)"+"\("Is Greater Than")"+"\(Num2__int)", separator: "", terminator: "\n")
-        } else {
-            if Num2__int>Num1__int {
-                print("\(Num2__int)"+"\("Is Greater Than")"+"\(Num1__int)", separator: "", terminator: "\n")
+        for x in stride(from: 1, to: 100, by: 1) {
+            if x%15==0 {
+                print("\("FizzBuzz")", separator: "", terminator: "\n")
             } else {
-                print("\("The Numbers Are The Same")", separator: "", terminator: "\n")
+                if x%5==0 {
+                    print("\("Buzz")", separator: "", terminator: "\n")
+                } else {
+                    if x%3==0 {
+                        print("\("Fizz")", separator: "", terminator: "\n")
+                    } else {
+                        print("\(x)", separator: "", terminator: "\n")
+                    }
+                }
             }
         }
         fallthrough

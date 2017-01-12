@@ -29,7 +29,7 @@ indirect enum Statement {
     
     case print([(Operator?, Expression)], terminator: Terminator)
     case forLoop(index: Variable, start: Expression, end: Expression, step: Expression, block: [Statement])
-    case if_(expression: Expression, block: [Statement], elseBlock: [Statement])
+    case if_(expression: Expression, block: [Statement], elseBlock: [Statement]?, elseIf: Statement?)
     case assignment(Variable, Expression)
     case declaration(Variable)
     case goto(label: Label)
@@ -160,6 +160,7 @@ struct Keyword {
     static func IF() -> StringParser<String>        { return string("IF")() }
     static func THEN() -> StringParser<String>      { return string("THEN")() }
     static func ELSE() -> StringParser<String>      { return string("ELSE")() }
+    static func ELSEIF() -> StringParser<String>    { return string("ELSEIF")() }
     static func ENDIF() -> StringParser<String>     { return string("END IF")() }
     static func DIM() -> StringParser<String>       { return string("DIM")() }
     static func AS() -> StringParser<String>        { return string("AS")() }
@@ -182,6 +183,7 @@ struct Keyword {
         "IF",
         "THEN",
         "ELSE",
+        "ELSEIF",
         "END",
         "DIM",
         "AS",

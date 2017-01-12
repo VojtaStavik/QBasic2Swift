@@ -14,7 +14,7 @@ let file: String
 if CommandLine.arguments.count > 1 {
     file = CommandLine.arguments[1]
 } else {
-    file = "/Users/vstavik/Documents/OSS/QBasicSwift/TestFiles/QBT7_4.BAS"
+    file = "/Users/vstavik/Documents/OSS/QBasicSwift/TestFiles/FizzBuzz.BAS"
 }
 
 let result = try! parse(parser.program, contentsOfFile: file)

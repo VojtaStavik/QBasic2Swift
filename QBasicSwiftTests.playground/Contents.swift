@@ -23,20 +23,47 @@ func != (l: Double, r: Int) -> Bool { return l != Double(r) }
 func != (l: Int, r: Double) -> Bool { return Double(l) != r }
 
 
-// Subs
-func DoubleNum(Number: Int) -> Void {
-    print("\("The Number Doubled: ")"+"\(Number*2)", terminator: "\n")
+// Functions
+func LOG(num__double: Double) -> Double {
+    return log(num__double)
+}
+
+func Power__single(y: Double, x: Double) -> Double {
+    return x+y
+    
+}
+
+func ABS(absInternal: Int) -> Int {
+    if absInternal>=0 {
+        return absInternal
+    } else {
+        return -absInternal
+    }
+}
+
+func LCASE__string(text__string: String) -> String {
+    return text__string.lowercased()
 }
 
 _ = {
     // Main loop vars declaration
-    var Num1: Int = 0
+    var Num2: Double = 0
+    var Num1: Double = 0
+    var Answer: Double = 0
     // CLS is not implemented yet
-    print("Enter An Integer To Double: ", terminator: "")
+    print("Enter First Number: ", terminator: "")
     let _ = {
         let input = readLine() ?? ""
-        Num1 = Int(input) ?? 0
+        Num1 = Double(input) ?? 0
     }()
     
-    DoubleNum(Number: Num1)
+    print("Enter Second Number: ", terminator: "")
+    let _ = {
+        let input = readLine() ?? ""
+        Num2 = Double(input) ?? 0
+    }()
+    
+    Answer = Power__single(y: Num1, x: Num2)
+    print("\("The Answer Is:")"+"\(Answer)", terminator: "\n")
 }()
+

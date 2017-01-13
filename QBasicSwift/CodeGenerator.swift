@@ -65,9 +65,9 @@ struct CodeGenerator: Swiftable {
             "\n\n"
         }
 
-        if Program.subs.isEmpty == false {
-            result +=   "// Subs\n"
-            Program.subs.forEach {
+        if Program.functions.isEmpty == false {
+            result +=   "// Functions\n"
+            Program.functions.forEach {
                 result += $0.toSwift()
             }
         }
@@ -155,7 +155,7 @@ struct RunLoop: Swiftable {
             return result
         } else {
             // No Switch needed
-            return "\n" + (blocks.first?.toSwiftWithoutSwitch(prefix, loopNextLabelVarName: nextLabelVarName) ?? "")
+            return blocks.first?.toSwiftWithoutSwitch(prefix, loopNextLabelVarName: nextLabelVarName) ?? ""
         }
     }
 }
@@ -264,7 +264,7 @@ extension Statement: Swiftable {
                 prefix + "}"
             
         case .if_(expression: let exp, block: let block, elseBlock: let elseBlock, elseIf: let elseif):
-            let blockCode = block.map { $0.toSwift(prefix + "\t", loopNextLabelVarName: loopNextLabelVarName) + "\n" }.joined()
+            let blockCode = block.map { $0.toSwift(prefix + "\t", loopNextLabelVarName: loopNextLabelVarName) }.joined()
             var result = prefix + "if " + exp.toSwift() + " {\n" +
                 blockCode +
                 prefix + "}"
@@ -286,7 +286,7 @@ extension Statement: Swiftable {
             }
             
             if finalElseBlock.isEmpty == false {
-                let blockCode = finalElseBlock.map { $0.toSwift(prefix + "\t") + "\n" }.joined()
+                let blockCode = finalElseBlock.map { $0.toSwift(prefix + "\t") }.joined()
                 result += " else {\n" +
                     blockCode +
                     prefix + "}"
@@ -310,7 +310,7 @@ extension Statement: Swiftable {
             // Comments are ignored
             return ""
             
-        case .subInvocation(let sub, parameters: let params):
+        case .funcInvocation(let sub, parameters: let params):
             let paramNames = sub.params.map { $0.name }
             
             assert(params.count == paramNames.count, "Function \(sub.name) called with \(params.count) parameters but declared with \(paramNames.count).")
@@ -321,6 +321,12 @@ extension Statement: Swiftable {
             })
             
             return prefix + "\(sub.name.sanitizedVariableName)(\(paramsAndValues.joined(separator: ", "))"
+            
+        case .funcReturn(value: let exp):
+            return prefix + "return \(exp.toSwift())\n"
+            
+        case .swiftCode(let code):
+            return prefix + code
             
         default:
             return ""
@@ -341,18 +347,33 @@ extension Statement.Terminator: Swiftable {
     }
 }
 
-extension Sub: Swiftable {
+extension Function: Swiftable {
     func toSwift(_ prefix: String = "") -> String {
         
-        let localVars = varPool.flatMap { (name, info) -> Variable? in
-                            if info.defType == .user {
-                                return Variable(name: name, type: info.type, definedBy: info.defType)
-                            } else {
-                                return nil
-                            }
-                        }
+        let swiftReturnType: String
+        switch returnType?.type {
+        case .integer?, .long?:
+            swiftReturnType = "Int"
+
+        case .single?, .double?:
+            swiftReturnType = "Double"
+            
+        case .string?:
+            swiftReturnType = "String"
+
+        default:
+            swiftReturnType = "Void"
+        }
         
-        var result = prefix + "func \(name)(\( params.map{ $0.asParameter() }.joined(separator: ", "))) -> Void {\n"
+        var result = prefix + "func \(name)(\( params.map{ $0.asParameter() }.joined(separator: ", "))) -> \(swiftReturnType) {\n"
+        
+        let localVars = varPool.flatMap { (name, info) -> Variable? in
+            if info.defType == .user {
+                return Variable(name: name, type: info.type, definedBy: info.defType)
+            } else {
+                return nil
+            }
+        }
         
         if localVars.isEmpty == false {
             result += "\t// Local vars declaration\n" +
@@ -425,7 +446,9 @@ extension Expression: Swiftable {
         case .literals(let l):
             return prefix + l.map{ $0.toSwift() }.joined(separator: "")
         case .variable(let v):
-            return prefix + v.toSwift()
+            return v.toSwift(prefix)
+        case .statement(let stat):
+            return stat.toSwift(prefix)
         }
     }
 }
@@ -433,7 +456,7 @@ extension Expression: Swiftable {
 extension Literal: Swiftable {
     func toSwift(_ prefix: String = "") -> String {
         switch self {
-        case .vaiableName(let s), .subName(let s):
+        case .vaiableName(let s), .functionName(let s):
             return prefix + s.sanitizedVariableName
         case .string(let s):
             return prefix + "\"\(s)\""
@@ -450,6 +473,8 @@ extension Operator: Swiftable {
         switch self {
         case .equal:
             return prefix + "=="
+        case .notEqual:
+            return prefix + "!="
         case .plus:
             return prefix + "+"
         case .minus:
@@ -460,8 +485,12 @@ extension Operator: Swiftable {
             return prefix + ")"
         case .lessThan:
             return prefix + "<"
+        case .lessOrEqual:
+            return prefix + "<="
         case .greaterThan:
             return prefix + ">"
+        case .greaterOrEqual:
+            return prefix + ">="
         case .modulo:
             return prefix + "%"
         case .comma:

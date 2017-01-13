@@ -14,21 +14,19 @@ let file: String
 if CommandLine.arguments.count > 1 {
     file = CommandLine.arguments[1]
 } else {
-    file = "/Users/vstavik/Documents/OSS/QBasicSwift/TestFiles/QBT37_2.BAS"
+    file = "/Users/vstavik/Documents/OSS/QBasicSwift/TestFiles/QBT38_3.BAS"
 }
 
-do {
+let stdLib = try! String(contentsOfFile: "/Users/vstavik/Documents/OSS/QBasicSwift/QBasicSwift/STDLIB.BAS")
+let contents = try! String(contentsOfFile: file)
+let complete = stdLib + "\n" + contents
 
-    let result = try parse(parser.program, contentsOfFile: file)
-    
-    switch result {
-    case let .left(err): print(err)
-    case let .right(blocks):
-        print(blocks)
-        print(CodeGenerator(blocks: blocks).toSwift())
-    }
+// print(complete)
 
-} catch {
-    print(error)
+let result = parse(parser.program, file, (stdLib + "\n" + contents).characters)
+
+switch result {
+case let .left(err): print(err)
+case let .right(blocks):
+    print(CodeGenerator(blocks: blocks).toSwift())
 }
-

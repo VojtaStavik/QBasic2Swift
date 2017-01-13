@@ -19,10 +19,9 @@ struct QBasicParser {
 extension QBasicParser {
 
     // Each block has its label and statements
-    func block(_ scope: SubName? = nil) -> () -> StringParser<Block> {
+    func block(_ scope: FunctionName? = nil) -> () -> StringParser<Block> {
         return {
             return (optionMaybe(self.label) >>- { label_ in
-                print("Block label: \(label_)")
                 return self.statements(scope) >>- {
                     create(Block(label: label_ ?? Label.main,
                                  statements: $0.flatMap{$0} ))
@@ -35,7 +34,7 @@ extension QBasicParser {
 // MARK: - Statements
 extension QBasicParser {
     
-    func statements(_ scope: SubName? = nil) -> () -> StringParser<[Statement]> {
+    func statements(_ scope: FunctionName? = nil) -> () -> StringParser<[Statement]> {
         return {
             return (attempt(many1(self.statement(scope))) >>- {
                 create($0.flatMap{$0})
@@ -43,10 +42,11 @@ extension QBasicParser {
         }
     }
     
-    func statement(_ scope: SubName? = nil) -> () -> StringParser<Statement?> {
+    func statement(_ scope: FunctionName? = nil) -> () -> StringParser<Statement?> {
         return {
             return (
-                attempt(self.comment)
+                attempt(self.swiftCode)
+                    <|> attempt(self.comment)
                     <|> attempt(self.printCommand(scope))
                     <|> attempt(self.declaration(scope))
                     <|> attempt(self.forLoop(scope))
@@ -57,6 +57,8 @@ extension QBasicParser {
                     <|> attempt(self.subDeclaration)
                     <|> attempt(self.subImplementation)
                     <|> attempt(self.subInvocation(scope))
+                    <|> attempt(self.functionDeclaration)
+                    <|> attempt(self.functionImplementation)
                     <|> attempt(self.assignment(scope))
                     <|> attempt(self.emptyLine)
                 )()
@@ -102,7 +104,7 @@ extension QBasicParser {
 // MARK: - IF statement
 extension QBasicParser {
     
-    func ifStatement(_ scope: SubName? = nil) -> () -> StringParser<Statement?> {
+    func ifStatement(_ scope: FunctionName? = nil) -> () -> StringParser<Statement?> {
         return {
             return (attempt(self.ifStatementSimple(scope)) <|> attempt(self.ifStatementFull(scope)))()
         }
@@ -111,7 +113,7 @@ extension QBasicParser {
     //IF 5 < 2 THEN
     //  PRINT "5 Is Less Than 2"
     //END IF
-    func ifStatementFull(_ scope: SubName? = nil) -> () -> StringParser<Statement?> {
+    func ifStatementFull(_ scope: FunctionName? = nil) -> () -> StringParser<Statement?> {
         return {
             return (spaces >>> Keyword.IF >>> spaces >>> self.expression(scope) <<< spaces <<< Keyword.THEN <<< endOfLine >>- { exp in
                 self.statements(scope) >>- { ifBlock in
@@ -132,7 +134,7 @@ extension QBasicParser {
     }
     
     //IF 5 < 2 THEN PRINT "5 Is Less Than 2"
-    func ifStatementSimple(_ scope: SubName? = nil) -> () -> StringParser<Statement?> {
+    func ifStatementSimple(_ scope: FunctionName? = nil) -> () -> StringParser<Statement?> {
         return {
             return (spaces >>> Keyword.IF >>> spaces >>> self.expression(scope) <<< spaces <<< Keyword.THEN >>- { exp in
                 spaces >>> self.statement(scope) <<< spaces <<< endOfLine >>- { com in
@@ -148,7 +150,7 @@ extension QBasicParser {
 extension QBasicParser {
     
     // PRINT >>>text$<<<
-    func variable(definedBy: Variable.DefinitionType?, scope: SubName?) -> () -> StringParser<Variable> {
+    func variable(definedBy: Variable.DefinitionType?, scope: FunctionName?) -> () -> StringParser<Variable> {
         return {
             return attempt(self.variableName >>- { name in
                 let type: Variable.VarType?
@@ -170,7 +172,8 @@ extension QBasicParser {
             
                 return create(Variable(name: name,
                                        type: type,
-                                       definedBy: definedBy,
+                                       // Assigning to the var with the same name as the current scope is returning from the function
+                                       definedBy: scope != name.sanitizedVariableName ? definedBy : .system,
                                        scope: scope))
             })()
         }
@@ -203,7 +206,7 @@ extension QBasicParser {
     //FOR x = 1 TO 10 STEP 1
     //    PRINT "SchoolFreeware"
     //NEXT x
-    func forLoop(_ scope: SubName?) -> () -> StringParser<Statement?> {
+    func forLoop(_ scope: FunctionName?) -> () -> StringParser<Statement?> {
         return {
             return (spaces >>> Keyword.FOR >>> spaces >>> self.variable(definedBy: .system, scope: scope) <<< spaces >>- { var_ in
                 string("=") >>> spaces >>> self.expression(scope) <<< spaces >>- { start in
@@ -232,7 +235,7 @@ extension QBasicParser {
     }
     
     // PRINT "Hey"
-    func printCommand(_ scope: SubName?) -> () -> StringParser<Statement?> {
+    func printCommand(_ scope: FunctionName?) -> () -> StringParser<Statement?> {
         return {
             return attempt(spaces >>> Keyword.PRINT >>> spaces >>> many(attempt(self.printExpression(scope))) >>- { prExp in
                 (optionMaybe(attempt(self.lineTerminator())) <<< spaces <<< endOfLine >>- { term in
@@ -243,7 +246,7 @@ extension QBasicParser {
     }
 
     // PRINT >>>"Somenting "; 5*(6+7); " something else." <<<
-    func printExpression(_ scope: SubName?) -> () -> StringParser<(Operator?, Expression)> {
+    func printExpression(_ scope: FunctionName?) -> () -> StringParser<(Operator?, Expression)> {
         return {
             return (optionMaybe(attempt(self.textFormattingOperator)) >>- { op in
                 attempt(self.expression(scope)) >>- { exp in
@@ -266,7 +269,7 @@ extension QBasicParser {
     }
     
     // INPUT "Whats your name? ", name$
-    func inputCommand(_ scope: SubName?) -> () -> StringParser<Statement?> {
+    func inputCommand(_ scope: FunctionName?) -> () -> StringParser<Statement?> {
         return {
             return attempt(spaces >>> Keyword.INPUT >>> spaces >>> optionMaybe(attempt(self.expression(scope))) >>- { exp in
                 spaces >>> optionMaybe(attempt(self.textFormattingOperator)) >>- { term in
@@ -290,7 +293,7 @@ extension QBasicParser {
     // DIM Num3 AS SINGLE
     // DIM Num4 AS DOUBLE
     // DIM Header AS STRING
-    func declaration(_ scope: SubName? = nil) -> () -> StringParser<Statement?> {
+    func declaration(_ scope: FunctionName? = nil) -> () -> StringParser<Statement?> {
         return {
             return (spaces >>> Keyword.DIM >>> spaces >>> self.declaredVariable(definedBy: .user, scope) >>- { var_ in
                     create(.declaration(var_))
@@ -300,64 +303,81 @@ extension QBasicParser {
     
     // Num1 AS INTEGER
     // Num%
-    func declaredVariable(definedBy: Variable.DefinitionType, _ scope: SubName? = nil) -> () -> StringParser<Variable> {
+    func declaredVariable(definedBy: Variable.DefinitionType, _ scope: FunctionName? = nil) -> () -> StringParser<Variable> {
         return {
-            return (spaces >>> self.variableName <<< spaces >>- { varName in
-                // Explicitly Typed variable
-                attempt(Keyword.AS >>> space >>- { _ in
-                    attempt(Keyword.INTEGER) <<< spaces >>- { _ in
-                        return create(Variable(name: varName, type: .integer, definedBy: definedBy, scope: scope))
+            return (
+                attempt(spaces >>> self.variableName <<< spaces >>- { varName in
+                    // Explicitly Typed variable
+                    attempt(Keyword.AS >>> space >>- { _ in
+                        attempt(Keyword.INTEGER) <<< spaces >>- { _ in
+                            return create(Variable(name: varName, type: .integer, definedBy: definedBy, scope: scope))
+                            }
+                            <|> attempt(Keyword.LONG <<< spaces ) >>- { _ in
+                                return create(Variable(name: varName, type: .long, definedBy: definedBy, scope: scope))
+                            }
+                            <|> attempt(Keyword.SINGLE <<< spaces ) >>- { _ in
+                                return create(Variable(name: varName, type: .single, definedBy: definedBy, scope: scope))
+                            }
+                            <|> attempt(Keyword.DOUBLE <<< spaces ) >>- { _ in
+                                return create(Variable(name: varName, type: .double, definedBy: definedBy, scope: scope))
+                            }
+                            <|> attempt(Keyword.STRING <<< spaces ) >>- { _ in
+                                return create(Variable(name: varName, type: .string, definedBy: definedBy, scope: scope))
                         }
-                        <|> attempt(Keyword.LONG <<< spaces ) >>- { _ in
-                            return create(Variable(name: varName, type: .long, definedBy: definedBy, scope: scope))
-                        }
-                        <|> attempt(Keyword.SINGLE <<< spaces ) >>- { _ in
-                            return create(Variable(name: varName, type: .single, definedBy: definedBy, scope: scope))
-                        }
-                        <|> attempt(Keyword.DOUBLE <<< spaces ) >>- { _ in
-                            return create(Variable(name: varName, type: .double, definedBy: definedBy, scope: scope))
-                        }
-                        <|> attempt(Keyword.STRING <<< spaces ) >>- { _ in
-                            return create(Variable(name: varName, type: .string, definedBy: definedBy, scope: scope))
-                    }
-                })
+                        })
+                    })
                 <|>
                 // Automaticaly cast variable
-                (self.variable(definedBy: definedBy, scope: scope))
-            })()
+                attempt(self.variable(definedBy: definedBy, scope: scope))
+            )()
         }
     }
 }
 
-// MARK: - Subs
+// MARK: - Functions
 extension QBasicParser {
     
     // DECLARE SUB sub1 (text$)
     func subDeclaration() -> StringParser<Statement?> {
         return (
-            spaces >>> Keyword.DECLARE >>> spaces >>> Keyword.SUB >>> spaces >>> self.subNameLiteral <<< spaces >>- { subName in
-                guard case .subName(let name) = subName else {
+            spaces >>> Keyword.DECLARE >>> spaces >>> Keyword.SUB >>> spaces >>> self.functionNameLiteral <<< spaces >>- { funcName in
+                guard case .functionName(let name) = funcName else {
                     return fail("Not a sub name")
                 }
                 
-                let sub = Sub(name: name, blocks: nil)
+                let sub = Function(name: name, blocks: nil)
                 
                 return (
                     skipMany(self.leftBracket) >>> spaces
                     >>> sepBy(self.declaredVariable(definedBy: .parameter, name), self.comma)
                     <<< spaces <<< skipMany(self.rightBracket) >>- { vars in
-                        create(.subDeclaration(sub, parameters: vars))
+                        create(.funcDeclaration(sub, parameters: vars))
                     })
             })()
     }
 
+    // DECLARE FUNCTION func1$ (int1%, int2%)
+    func functionDeclaration() -> StringParser<Statement?> {
+        return (
+            spaces >>> Keyword.DECLARE >>> spaces >>> Keyword.FUNCTION >>> spaces >>> self.declaredVariable(definedBy: .system, nil) <<< spaces >>- { returnVar in
+                let sub = Function(name: returnVar.name.sanitizedVariableName, blocks: nil, returnType: returnVar)
+                return (
+                    skipMany(self.leftBracket) >>> spaces
+                        >>> sepBy(self.declaredVariable(definedBy: .parameter, returnVar.name.sanitizedVariableName), self.comma)
+                        <<< spaces <<< skipMany(self.rightBracket) >>- { vars in
+                            create(.funcDeclaration(sub, parameters: vars))
+                    })
+            })()
+    }
+
+    
     // SUB sub1 (text$)
     //  PRINT "Sub1", text$
     // END SUB
     func subImplementation() -> StringParser<Statement?> {
         return (
-            spaces >>> Keyword.SUB >>> spaces >>> self.subNameLiteral <<< spaces >>- { subName in
-                guard case .subName(let name) = subName else {
+            spaces >>> Keyword.SUB >>> spaces >>> self.functionNameLiteral <<< spaces >>- { FunctionName in
+                guard case .functionName(let name) = FunctionName else {
                     return fail("Not a sub name")
                 }
                 
@@ -367,29 +387,53 @@ extension QBasicParser {
                     <<< spaces <<< skipMany1(self.rightBracket) >>- { vars in
 
                     many(attempt(self.block(name))) <<< spaces <<< Keyword.ENDSUB >>- { blocks in
-                        let sub = Sub(name: name, blocks: blocks)
-                        return create(.subImplementation(sub))
+                        let sub = Function(name: name, blocks: blocks)
+                        return create(.funcImplementation(sub))
                     }
                 })
         })()
     }
+
+    // FUNCTION fun1$ (text$)
+    //   fun1$ = text$
+    // END FUNCTION
+    func functionImplementation() -> StringParser<Statement?> {
+        return (
+            spaces >>> Keyword.FUNCTION >>> spaces >>> self.declaredVariable(definedBy: .system, nil) <<< spaces >>- { returnVar in
+                
+                // If the function wasn't declared before, this will perform its decalration
+                let _ = Function(name: returnVar.name.sanitizedVariableName, blocks: nil, returnType: returnVar)
+                
+                return (
+                    skipMany1(self.leftBracket) >>> spaces
+                        >>> sepBy(self.declaredVariable(definedBy: .parameter, returnVar.name.sanitizedVariableName), self.comma)
+                        <<< spaces <<< skipMany1(self.rightBracket) >>- { vars in
+                            
+                            many(attempt(self.block(returnVar.name.sanitizedVariableName))) <<< spaces <<< Keyword.ENDFUNCTION >>- { blocks in
+                                let funct = Function(name: returnVar.name.sanitizedVariableName, blocks: blocks, returnType: returnVar)
+                                return create(.funcImplementation(funct))
+                            }
+                    })
+            })()
+    }
+
     
     // sub1 "Hey"
-    func subInvocation(_ scope: SubName?) -> () -> StringParser<Statement?> {
+    func subInvocation(_ scope: FunctionName?) -> () -> StringParser<Statement?> {
         return {
-            return (spaces >>> self.subNameLiteral <<< spaces >>- { subName in
-                guard case .subName(let name) = subName else {
+            return (spaces >>> self.functionNameLiteral <<< spaces <<< attempt(notFollowedBy(self.comparisonOperatorsLiterals)) >>- { fName in
+                guard case .functionName(let name) = fName else {
                     return fail("Not a sub name")
                 }
                 
-                guard let sub = Sub.existing(withName: name) else {
+                guard let sub = Function.existing(withName: name) else {
                     return fail("Not a sub name")
                 }
                 
                 return
                     skipMany(self.leftBracket) >>> spaces >>> attempt(sepBy(self.expression(scope), self.comma))
-                        <<< spaces <<< skipMany(self.rightBracket) <<< endOfLine >>- { params in
-                        return create(.subInvocation(sub, parameters: params))
+                        <<< spaces <<< skipMany(self.rightBracket) >>- { params in
+                        return create(.funcInvocation(sub, parameters: params))
                     }
             })()
         }
@@ -406,7 +450,7 @@ extension QBasicParser {
                     <|> attempt(intNumberLiteral)
                     <|> attempt(stringLiteral)
                     <|> attempt(variableLiteral)
-                    <|> attempt(subNameLiteral)
+                    <|> attempt(functionNameLiteral)
                     <|> attempt(operatorLiteral)
                 )
                 >>- { create($0) }
@@ -425,8 +469,8 @@ extension QBasicParser {
         return (variableName >>- { create(.vaiableName(String($0))) })()
     }
 
-    func subNameLiteral() -> StringParser<Literal> {
-        return (variableName >>- { create(.subName(String($0))) })()
+    func functionNameLiteral() -> StringParser<Literal> {
+        return (variableName >>- { create(.functionName(String($0))) })()
     }
     
     func intNumberLiteral() -> StringParser<Literal> {
@@ -443,11 +487,17 @@ extension QBasicParser {
     }
 
     // T$ = "Test"
-    func assignment(_ scope: SubName?) -> () -> StringParser<Statement?> {
+    func assignment(_ scope: FunctionName?) -> () -> StringParser<Statement?> {
         return {
             return ((spaces >>> attempt(self.variable(definedBy: .user, scope: scope)) <<< spaces <<< string("=") <<< spaces) >>- { var_ in
                 self.expression(scope) <<< endOfLine >>- { exp in
-                    create(.assignment(var_, exp))
+                    if var_.name.sanitizedVariableName == scope?.sanitizedVariableName {
+                        // Assigning to the varible with the same name as the scope means Return from the function
+                        return create(.funcReturn(value: exp))
+                        
+                    } else {
+                        return create(.assignment(var_, exp))
+                    }
                 }
             })()
         }
@@ -475,12 +525,23 @@ extension QBasicParser {
 // MARK: - Epressions
 extension QBasicParser {
 
-    func expression(_ scope: SubName? = nil) -> () -> StringParser<Expression> {
+    func expression(_ scope: FunctionName? = nil) -> () -> StringParser<Expression> {
         return {
             return (
-                attempt(self.literals) >>- { create(.literals($0)) }
-                    <|> attempt(self.variable(definedBy: nil, scope: scope)) >>- { create(.variable($0))}
-                )()
+                (attempt(self.statement(scope)) >>- { stat_ in
+                        if let stat = stat_ {
+                            return create(.statement(stat))
+                        } else {
+                            return fail("not a statement")
+                        }
+                    })
+                <|> (attempt(self.literals) >>- {
+                        return create(.literals($0))
+                    })
+                <|> (attempt(self.variable(definedBy: nil, scope: scope)) >>- {
+                    return create(.variable($0))
+                    })
+            )()
         }
     }
 }
@@ -491,11 +552,14 @@ extension QBasicParser {
     func operatorLiteral() -> StringParser<Literal> {
         return (
             attempt(equalOperator)
+                <|> attempt(notEqualOperator)
                 <|> attempt(plusOperator)
                 <|> attempt(minusOperator)
                 <|> attempt(leftBracket)
                 <|> attempt(rightBracket)
+                <|> attempt(lessOrEqual)
                 <|> attempt(lessThan)
+                <|> attempt(greaterOrEqual)
                 <|> attempt(greaterThan)
                 <|> attempt(modulo)
                 <|> attempt(multiplication)
@@ -505,6 +569,10 @@ extension QBasicParser {
     
     func equalOperator() -> StringParser<Literal> {
         return (spaces >>> char("=") <<< spaces >>- { _ in create(.op(.equal))})()
+    }
+
+    func notEqualOperator() -> StringParser<Literal> {
+        return (spaces >>> string("<>") <<< spaces >>- { _ in create(.op(.notEqual))})()
     }
     
     func plusOperator() -> StringParser<Literal> {
@@ -527,10 +595,18 @@ extension QBasicParser {
         return (spaces >>> char("<") <<< spaces >>- { _ in create(.op(.lessThan))})()
     }
     
+    func lessOrEqual() -> StringParser<Literal> {
+        return (spaces >>> string("<=") <<< spaces >>- { _ in create(.op(.lessOrEqual))})()
+    }
+    
     func greaterThan() -> StringParser<Literal> {
         return (spaces >>> char(">") <<< spaces >>- { _ in create(.op(.greaterThan))})()
     }
     
+    func greaterOrEqual() -> StringParser<Literal> {
+        return (spaces >>> string(">=") <<< spaces >>- { _ in create(.op(.greaterOrEqual))})()
+    }
+
     func modulo() -> StringParser<Literal> {
         return (spaces >>> string("MOD") <<< spaces >>- { _ in create(.op(.modulo))})()
     }
@@ -543,8 +619,8 @@ extension QBasicParser {
         return (spaces >>> char("/") <<< spaces >>- { _ in create(.op(.division))})()
     }
     
-    // ; OR ,
     
+    // ; OR ,
     func textFormattingOperator() -> StringParser<Operator> {
         return (
             attempt(comma) <|> attempt(semicolon)
@@ -557,5 +633,20 @@ extension QBasicParser {
     
     func semicolon() -> StringParser<Operator> {
         return (spaces >>> char(";") <<< spaces >>- { _ in create(.semicolon)})()
+    }
+    
+    // < > = =
+    func comparisonOperatorsLiterals() -> StringParser<Literal> {
+        return attempt(equalOperator <|> lessThan <|> greaterThan)()
+    }
+}
+
+// Helpers
+extension QBasicParser {
+    // Parses chunks of raw swift code
+    func swiftCode() -> StringParser<Statement?> {
+        return attempt(spaces >>> string("//SWIFT") >>> many(noneOf("\n")) <<< endOfLine >>- { code in
+            return create(.swiftCode(String(code)))
+        })()
     }
 }

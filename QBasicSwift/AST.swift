@@ -9,7 +9,7 @@
 import Foundation
 
 typealias VariableName = String
-typealias SubName = String
+typealias FunctionName = String
 typealias VarInfo = (type: Variable.VarType?, defType: Variable.DefinitionType?)
 
 struct Program {
@@ -21,7 +21,7 @@ struct Program {
     // Default scope
     static var mainLoopVarsPool: [VariableName: VarInfo] = [:]
     
-    static var subs: Set<Sub> = []
+    static var functions: Set<Function> = []
 }
 
 struct Block {
@@ -46,16 +46,21 @@ indirect enum Statement {
     case cls
     case comment(String)
     
-    // Subs
-    case subDeclaration(Sub, parameters: [Variable])
-    case subInvocation(Sub, parameters: [Expression])
-    case subImplementation(Sub)
+    // Functions
+    case funcDeclaration(Function, parameters: [Variable])
+    case funcInvocation(Function, parameters: [Expression])
+    case funcImplementation(Function)
+    case funcReturn(value: Expression)
+    
+    // Helpers
+    case swiftCode(String) // This inserts the code directly into the output file (useful for STDLIB)
 }
 
 
 indirect enum Expression {
     case literals([Literal])
     case variable(Variable)
+    case statement(Statement)
 }
 
 struct Variable {
@@ -63,7 +68,7 @@ struct Variable {
     let type: VarType?
     let definedBy: DefinitionType?
     
-    init(name: String, type: VarType?, definedBy: DefinitionType?, scope: SubName? = nil) {
+    init(name: String, type: VarType?, definedBy: DefinitionType?, scope: FunctionName? = nil) {
 
         self.name = name
         
@@ -76,13 +81,13 @@ struct Variable {
         
         if case .system = definedBy_ {
             // Var is not user defined, nothing to do here
-            self.type = nil
+            self.type = type
             self.definedBy = definedBy
             return
         }
         
         var varPool: [VariableName :VarInfo] {
-            get { return scope == nil ? Program.mainLoopVarsPool : Program.subs.filter{ $0.name == scope! }
+            get { return scope == nil ? Program.mainLoopVarsPool : Program.functions.filter{ $0.name == scope! }
                                                                             .first!
                                                                             .varPool
             }
@@ -90,9 +95,9 @@ struct Variable {
                 if scope == nil {
                     Program.mainLoopVarsPool = newValue
                 } else {
-                    var sub = Program.subs.filter{ $0.name == scope! }.first!
-                    sub.varPool = newValue
-                    Program.subs.update(with: sub)
+                    var function = Program.functions.filter{ $0.name == scope! }.first!
+                    function.varPool = newValue
+                    Program.functions.update(with: function)
                 }
             }
         }
@@ -160,27 +165,30 @@ extension Variable: Equatable {
     }
 }
 
-struct Sub {
-    let name: SubName
+struct Function {
+    let name: FunctionName
     var blocks: [Block]?
+    var returnType: Variable?
     var varPool: [VariableName: VarInfo] = [:]
     
-    init(name: SubName, blocks: [Block]?) {
+    init(name: FunctionName, blocks: [Block]?, returnType: Variable? = nil) {
         self.name = name
         
-        if let existing = Program.subs.filter({ $0.name == name }).first {
+        if let existing = Program.functions.filter({ $0.name == name }).first {
             self.blocks = blocks ?? existing.blocks
+            self.returnType = returnType ?? existing.returnType
             self.varPool = existing.varPool
-            Program.subs.update(with: self)
+            Program.functions.update(with: self)
         } else {
             self.blocks = blocks
-            Program.subs.insert(self)
+            self.returnType = returnType
+            Program.functions.insert(self)
         }
     }
     
-    /// Return existing sub or nil
-    static func existing(withName name: SubName) -> Sub? {
-        return Program.subs.filter { $0.name == name }.first
+    /// Return existing Function or nil
+    static func existing(withName name: FunctionName) -> Function? {
+        return Program.functions.filter { $0.name == name.sanitizedVariableName }.first
     }
     
     var params: [Variable] {
@@ -194,14 +202,14 @@ struct Sub {
     }
 }
 
-extension Sub: Hashable {
+extension Function: Hashable {
     var hashValue: Int {
         return name.hashValue
     }
 }
 
-extension Sub: Equatable {
-    static func == (l: Sub, r: Sub) -> Bool {
+extension Function: Equatable {
+    static func == (l: Function, r: Function) -> Bool {
         return l.name == r.name
     }
 }
@@ -223,7 +231,7 @@ extension Label: Swiftable {
 
 indirect enum Literal {
     case vaiableName(String)
-    case subName(String)
+    case functionName(String)
     case string(String)
     case numberInt(String)
     case numberFloat(String)
@@ -232,12 +240,15 @@ indirect enum Literal {
 
 enum Operator {
     case equal
+    case notEqual
     case plus
     case minus
     case leftBracket
     case rightBracket
     case lessThan
+    case lessOrEqual
     case greaterThan
+    case greaterOrEqual
     case modulo
     case comma
     case semicolon
@@ -269,7 +280,9 @@ struct Keyword {
     static func INPUT() -> StringParser<String>     { return string("INPUT")() }
     static func DECLARE() -> StringParser<String>   { return string("DECLARE")() }
     static func SUB() -> StringParser<String>       { return string("SUB")() }
+    static func FUNCTION() -> StringParser<String>  { return string("FUNCTION")() }
     static func ENDSUB() -> StringParser<String>    { return string("END SUB")() }
+    static func ENDFUNCTION() -> StringParser<String> { return string("END FUNCTION")() }
     
     static let all: [String] = [
         "PRINT",
@@ -295,5 +308,6 @@ struct Keyword {
         "INPUT",
         "DECLARE",
         "SUB",
+        "FUNCTION",
     ]
 }

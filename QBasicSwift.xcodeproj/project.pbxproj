@@ -46,6 +46,7 @@
 		D87ECF611E2272E3003A82FC /* CodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGenerator.swift; sourceTree = "<group>"; };
 		D8868E4D1E1ED36D008FA7DD /* QBasicSwift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = QBasicSwift; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8868E501E1ED36D008FA7DD /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		D8BAE5241E29035600795A2C /* STDLIB.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = STDLIB.BAS; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +101,7 @@
 				D87ECF611E2272E3003A82FC /* CodeGenerator.swift */,
 				D86E7D0A1E25104D00F79B7C /* Parser.swift */,
 				D8868E501E1ED36D008FA7DD /* main.swift */,
+				D8BAE5241E29035600795A2C /* STDLIB.BAS */,
 			);
 			path = QBasicSwift;
 			sourceTree = "<group>";

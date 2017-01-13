@@ -34,8 +34,8 @@ func ABS(absInternal: Int) -> Int {
     }
 }
 
-func STR__string(num__double: Double) -> String {
-    return String(num__double) ?? ""
+func STR__string<T: Strideable>(num__double: T) -> String {
+    return String(describing: num__double) 
 }
 
 func LCASE__string(text__string: String) -> String {

@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:QBasicSwift.xcodeproj">
+      location = "self:/Users/vstavik/Documents/OSS/QBasicSwift/QBasic2Swift.xcodeproj">
    </FileRef>
 </Workspace>

@@ -11,13 +11,10 @@ import Foundation
 let parser = QBasicParser()
 
 let file: String
-if CommandLine.arguments.count > 1 {
-    file = CommandLine.arguments[1]
-} else {
-    file = "/Users/vstavik/Documents/OSS/QBasicSwift/TestFiles/QBT38_3.BAS"
-}
+file = "/Users/vstavik/Documents/OSS/QBasicSwift/TestFiles/QBT38_3.BAS"
 
-let stdLib = try! String(contentsOfFile: "/Users/vstavik/Documents/OSS/QBasicSwift/QBasicSwift/STDLIB.BAS")
+
+let stdLib = try! String(contentsOfFile: Bundle.main.path(forResource: "STDLIB", ofType: "BAS")!)
 let contents = try! String(contentsOfFile: file)
 let complete = stdLib + "\nUserProgramInternal:\n" + contents
 

@@ -4,7 +4,7 @@ STDLIBINTERNAL:
 ' STDLIB functions are marked _FUNCTION and _SUB
 
 //SWIFT // Because QBasic is not that strict about types, we need these helper functions
-//SWIFT // to make it work the same way.
+//SWIFT // to make Swift work the same way.
 
 //SWIFT func + (l: Double, r: Int) -> Double { return l + Double(r) }
 //SWIFT func + (l: Int, r: Double) -> Double { return r + l }
@@ -23,6 +23,8 @@ STDLIBINTERNAL:
 //SWIFT func == (l: Int, r: Double) -> Bool { return Double(l) == r }
 //SWIFT func != (l: Double, r: Int) -> Bool { return l != Double(r) }
 //SWIFT func != (l: Int, r: Double) -> Bool { return Double(l) != r }
+
+
 
 _FUNCTION ABS AS INTEGER (absInternal AS INTEGER)
     IF absInternal >= 0 THEN

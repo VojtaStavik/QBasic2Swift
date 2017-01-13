@@ -171,8 +171,12 @@ struct Function {
     var returnType: Variable?
     var varPool: [VariableName: VarInfo] = [:]
     
-    init(name: FunctionName, blocks: [Block]?, returnType: Variable? = nil) {
+    /// Indicates if the function if part of STDLIB
+    var isSTDLIB: Bool
+    
+    init(name: FunctionName, blocks: [Block]?, returnType: Variable? = nil, isSTDLIB: Bool = false) {
         self.name = name
+        self.isSTDLIB = isSTDLIB
         
         if let existing = Program.functions.filter({ $0.name == name }).first {
             self.blocks = blocks ?? existing.blocks
@@ -281,6 +285,7 @@ struct Keyword {
     static func DECLARE() -> StringParser<String>   { return string("DECLARE")() }
     static func SUB() -> StringParser<String>       { return string("SUB")() }
     static func FUNCTION() -> StringParser<String>  { return string("FUNCTION")() }
+    static func STDLIBFUNCTION() -> StringParser<String>  { return string("_FUNCTION")() }
     static func ENDSUB() -> StringParser<String>    { return string("END SUB")() }
     static func ENDFUNCTION() -> StringParser<String> { return string("END FUNCTION")() }
     

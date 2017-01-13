@@ -12,7 +12,6 @@ func * (l: Double, r: Int) -> Double { return l * Double(r) }
 func * (l: Int, r: Double) -> Double { return r * l }
 func / (l: Double, r: Int) -> Double { return l / Double(r) }
 func / (l: Int, r: Double) -> Double { return Double(l) / r }
-
 func > (l: Double, r: Int) -> Bool { return l > Double(r) }
 func > (l: Int, r: Double) -> Bool { return Double(l) > r }
 func < (l: Double, r: Int) -> Bool { return l < Double(r) }
@@ -22,15 +21,9 @@ func == (l: Int, r: Double) -> Bool { return Double(l) == r }
 func != (l: Double, r: Int) -> Bool { return l != Double(r) }
 func != (l: Int, r: Double) -> Bool { return Double(l) != r }
 
-
-// Functions
+// STDLIB Functions
 func LOG(num__double: Double) -> Double {
     return log(num__double)
-}
-
-func Power__single(y: Double, x: Double) -> Double {
-    return x+y
-    
 }
 
 func ABS(absInternal: Int) -> Int {
@@ -41,8 +34,19 @@ func ABS(absInternal: Int) -> Int {
     }
 }
 
+func STR__string(num__double: Double) -> String {
+    return String(num__double) ?? ""
+}
+
 func LCASE__string(text__string: String) -> String {
     return text__string.lowercased()
+}
+
+
+// User functions
+func Power__single(y: Double, x: Double) -> Double {
+    return x+y
+    
 }
 
 _ = {
@@ -65,5 +69,5 @@ _ = {
     
     Answer = Power__single(y: Num1, x: Num2)
     print("\("The Answer Is:")"+"\(Answer)", terminator: "\n")
+    print("\(STR__string(num__double: 158))", terminator: "\n")
 }()
-

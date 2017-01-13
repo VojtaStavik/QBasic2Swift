@@ -22,33 +22,37 @@ struct CodeGenerator: Swiftable {
     
     static let programHeaders: String =
         "#!/usr/bin/env xcrun swift\n" +
-        "\n" +
-        "import Foundation\n" +
-        "\n" +
-        "// Because QBasic is not that strict about types, we need these helper functions\n" +
-        "// to make it work the same way.\n" +
-            "func + (l: Double, r: Int) -> Double { return l + Double(r) }\n" +
-            "func + (l: Int, r: Double) -> Double { return r + l }\n" +
-            "func - (l: Double, r: Int) -> Double { return l - Double(r) }\n" +
-            "func - (l: Int, r: Double) -> Double { return Double(l) - r }\n" +
-            "func * (l: Double, r: Int) -> Double { return l * Double(r) }\n" +
-            "func * (l: Int, r: Double) -> Double { return r * l }\n" +
-            "func / (l: Double, r: Int) -> Double { return l / Double(r) }\n" +
-            "func / (l: Int, r: Double) -> Double { return Double(l) / r }\n" +
-            "\n" +
-            "func > (l: Double, r: Int) -> Bool { return l > Double(r) }\n" +
-            "func > (l: Int, r: Double) -> Bool { return Double(l) > r }\n" +
-            "func < (l: Double, r: Int) -> Bool { return l < Double(r) }\n" +
-            "func < (l: Int, r: Double) -> Bool { return Double(l) < r }\n" +
-            "func == (l: Double, r: Int) -> Bool { return l == Double(r) }\n" +
-            "func == (l: Int, r: Double) -> Bool { return Double(l) == r }\n" +
-            "func != (l: Double, r: Int) -> Bool { return l != Double(r) }\n" +
-            "func != (l: Int, r: Double) -> Bool { return Double(l) != r }\n" +
-            "\n\n"
+        "import Foundation\n"
     
     func toSwift(_ prefix: String = "") -> String {
+        return toSwift(prefix, onlyUserCode: false)
+    }
+    
+    func toSwift(_ prefix: String, onlyUserCode: Bool) -> String {
         
-        var result = CodeGenerator.programHeaders
+        var result = ""
+        
+        if onlyUserCode == false {
+            
+            result += CodeGenerator.programHeaders
+            
+            result += "\n"
+            
+            let stdLibBlock = blocks.filter{ $0.label.name == "STDLIBINTERNAL" }.first!
+            result += stdLibBlock.toSwiftWithoutSwitch(loopNextLabelVarName: "")
+            
+            result += "\n"
+            
+            let stdLibFunctions = Program.functions.filter{ $0.isSTDLIB }
+            result +=   "// STDLIB Functions\n"
+            stdLibFunctions.forEach {
+                result += $0.toSwift()
+            }
+        }
+       
+        result += "\n"
+        
+        // Global variables
         
         let globalVars = Program.globalVarsPool
             .flatMap { (name, info) -> Variable? in
@@ -57,21 +61,23 @@ struct CodeGenerator: Swiftable {
                 } else {
                     return nil
                 }
-            }
-
+        }
+        
         if globalVars.isEmpty == false {
             result += "// Global vars declaration\n" +
                 globalVars.map{ $0.declaration() }.joined(separator: "\n") +
-            "\n\n"
+            "\n"
         }
-
-        if Program.functions.isEmpty == false {
-            result +=   "// Functions\n"
-            Program.functions.forEach {
+        
+        // User defined functions
+        let userFunctions = Program.functions.filter{ $0.isSTDLIB == false }
+        if userFunctions.isEmpty == false {
+            result +=   "// User functions\n"
+            userFunctions.forEach {
                 result += $0.toSwift()
             }
         }
-
+        
         // Main loop
         result +=   "_ = {\n"
 
@@ -90,7 +96,7 @@ struct CodeGenerator: Swiftable {
             "\n"
         }
 
-        result += RunLoop(blocks: blocks, identifier: "main").toSwift("\t")
+        result += RunLoop(blocks: blocks.filter{ $0.label.name != "STDLIBINTERNAL" }, identifier: "main").toSwift("\t")
         
         result += "}()\n"
         
@@ -103,7 +109,8 @@ struct RunLoop: Swiftable {
     let identifier: String
     
     var firstBlockLabel: String {
-        if let name = blocks.first?.label.name {
+        let blocksWithoutSTDLIB = blocks.filter{ $0.label.name != "STDLIBINTERNAL" }
+        if let name = blocksWithoutSTDLIB.first?.label.name {
             if name.isEmpty {
                 return "\"\""
             } else {
@@ -120,7 +127,7 @@ struct RunLoop: Swiftable {
     func loopStart(_ prefix: String) -> String {
         return [
             "// \(identifier) loop:",
-            "var \(nextLabelVarName) = \(firstBlockLabel)",
+            "var \(nextLabelVarName) = \"\(firstBlockLabel)\"",
             "var \(doneVarName) = false",
             "repeat {",
             "\tswitch \(nextLabelVarName) {"

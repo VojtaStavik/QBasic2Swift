@@ -19,11 +19,11 @@ if CommandLine.arguments.count > 1 {
 
 let stdLib = try! String(contentsOfFile: "/Users/vstavik/Documents/OSS/QBasicSwift/QBasicSwift/STDLIB.BAS")
 let contents = try! String(contentsOfFile: file)
-let complete = stdLib + "\n" + contents
+let complete = stdLib + "\nUserProgramInternal:\n" + contents
 
 // print(complete)
 
-let result = parse(parser.program, file, (stdLib + "\n" + contents).characters)
+let result = parse(parser.program, file, complete.characters)
 
 switch result {
 case let .left(err): print(err)

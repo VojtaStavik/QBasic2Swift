@@ -59,6 +59,7 @@ extension QBasicParser {
                     <|> attempt(self.subInvocation(scope))
                     <|> attempt(self.functionDeclaration)
                     <|> attempt(self.functionImplementation)
+                    <|> attempt(self.stdLibFunctionImplementation)
                     <|> attempt(self.assignment(scope))
                     <|> attempt(self.emptyLine)
                 )()
@@ -418,6 +419,34 @@ extension QBasicParser {
     }
 
     
+    // Function part of the STDLIB (temp)
+    // _FUNCTION fun1$ (text$)
+    //   fun1$ = text$
+    // END FUNCTION
+    func stdLibFunctionImplementation() -> StringParser<Statement?> {
+        return (
+            spaces >>> Keyword.STDLIBFUNCTION >>> spaces >>> self.declaredVariable(definedBy: .system, nil) <<< spaces >>- { returnVar in
+                
+                // If the function wasn't declared before, this will perform its decalration
+                let _ = Function(name: returnVar.name.sanitizedVariableName, blocks: nil, returnType: returnVar)
+                
+                return (
+                    skipMany1(self.leftBracket) >>> spaces
+                        >>> sepBy(self.declaredVariable(definedBy: .parameter, returnVar.name.sanitizedVariableName), self.comma)
+                        <<< spaces <<< skipMany1(self.rightBracket) >>- { vars in
+                            
+                            many(attempt(self.block(returnVar.name.sanitizedVariableName))) <<< spaces <<< Keyword.ENDFUNCTION >>- { blocks in
+                                let funct = Function(name: returnVar.name.sanitizedVariableName,
+                                                     blocks: blocks,
+                                                     returnType: returnVar,
+                                                     isSTDLIB: true)
+                                
+                                return create(.funcImplementation(funct))
+                            }
+                    })
+            })()
+    }
+    
     // sub1 "Hey"
     func subInvocation(_ scope: FunctionName?) -> () -> StringParser<Statement?> {
         return {
@@ -645,7 +674,7 @@ extension QBasicParser {
 extension QBasicParser {
     // Parses chunks of raw swift code
     func swiftCode() -> StringParser<Statement?> {
-        return attempt(spaces >>> string("//SWIFT") >>> many(noneOf("\n")) <<< endOfLine >>- { code in
+        return attempt(spaces >>> string("//SWIFT") >>> space >>> many(noneOf("\n")) <<< endOfLine >>- { code in
             return create(.swiftCode(String(code)))
         })()
     }

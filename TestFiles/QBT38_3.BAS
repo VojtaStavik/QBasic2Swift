@@ -12,6 +12,8 @@ Answer = Power!(Num1, Num2)
 
 PRINT "The Answer Is:"; Answer
 
+PRINT STR$(158)
+
 FUNCTION Power! (x AS SINGLE, y AS SINGLE)
 Power! = x + y
 END FUNCTION

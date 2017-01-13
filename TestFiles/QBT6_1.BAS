@@ -8,6 +8,3 @@ INPUT "Enter Last Name: ", LastName
 
 PRINT
 PRINT "Nice To Meet You, "; FirstName; " "; LastName
-
-
-

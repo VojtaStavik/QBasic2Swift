@@ -167,7 +167,6 @@ extension QBasicParser {
                 case "#":
                     type = .double
                 default:
-                    // Unknown type
                     type = nil
                 }
             
@@ -383,9 +382,9 @@ extension QBasicParser {
                 }
                 
                 return (
-                    skipMany1(self.leftBracket) >>> spaces
+                    optionMaybe(skipMany1(self.leftBracket) >>> spaces
                     >>> sepBy(self.declaredVariable(definedBy: .parameter, name), self.comma)
-                    <<< spaces <<< skipMany1(self.rightBracket) >>- { vars in
+                    <<< spaces <<< skipMany1(self.rightBracket)) >>- { vars in
 
                     many(attempt(self.block(name))) <<< spaces <<< Keyword.ENDSUB >>- { blocks in
                         let sub = Function(name: name, blocks: blocks)
@@ -460,9 +459,12 @@ extension QBasicParser {
                 }
                 
                 return
-                    skipMany(self.leftBracket) >>> spaces >>> attempt(sepBy(self.expression(scope), self.comma))
-                        <<< spaces <<< skipMany(self.rightBracket) >>- { params in
-                        return create(.funcInvocation(sub, parameters: params))
+                    optionMaybe(
+                        between(skipMany(self.leftBracket), skipMany(self.rightBracket),
+                                attempt(sepBy(self.expression(scope), self.comma))))
+                     >>- { params in
+                            print("\(params)")
+                        return create(.funcInvocation(sub, parameters: params ?? []))
                     }
             })()
         }
@@ -481,6 +483,7 @@ extension QBasicParser {
                     <|> attempt(variableLiteral)
                     <|> attempt(functionNameLiteral)
                     <|> attempt(operatorLiteral)
+                    <|> attempt(bracedLiteral)
                 )
                 >>- { create($0) }
             )()
@@ -515,6 +518,19 @@ extension QBasicParser {
             })()
     }
 
+    func bracedLiteral() -> StringParser<Literal> {
+        return (
+            (attempt(spaces >>> self.leftBracket) >>- { leftBr in
+                self.literals >>- { exps in
+                    spaces >>> self.rightBracket >>- { rightBr in
+                        print(exps)
+                        return create(.braced([leftBr] + exps + [rightBr]))
+                    }
+                }
+            })
+        )()
+    }
+    
     // T$ = "Test"
     func assignment(_ scope: FunctionName?) -> () -> StringParser<Statement?> {
         return {
@@ -584,8 +600,8 @@ extension QBasicParser {
                 <|> attempt(notEqualOperator)
                 <|> attempt(plusOperator)
                 <|> attempt(minusOperator)
-                <|> attempt(leftBracket)
-                <|> attempt(rightBracket)
+//                <|> attempt(leftBracket)
+//                <|> attempt(rightBracket)
                 <|> attempt(lessOrEqual)
                 <|> attempt(lessThan)
                 <|> attempt(greaterOrEqual)

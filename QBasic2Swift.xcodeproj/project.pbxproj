@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D82580C81E2957C000656CFA /* goto.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D82580C71E2957C000656CFA /* goto.BAS */; };
+		D829A6C61E29634000F75E1F /* input.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D829A6C41E29630500F75E1F /* input.BAS */; };
 		D85E4EA61E29373B00BDA30D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D85E4EA51E29373B00BDA30D /* Assets.xcassets */; };
 		D85E4EB41E29373C00BDA30D /* QBasic2SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85E4EB31E29373C00BDA30D /* QBasic2SwiftTests.swift */; };
 		D85E4EC01E29379800BDA30D /* AST.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85E4EBC1E29379800BDA30D /* AST.swift */; };
@@ -20,7 +22,19 @@
 		D85E4EC81E29381500BDA30D /* Primitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86E7D111E254E2200F79B7C /* Primitive.swift */; };
 		D85E4EC91E29381500BDA30D /* SourcePos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86E7D121E254E2200F79B7C /* SourcePos.swift */; };
 		D85E4ECA1E29381500BDA30D /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86E7D131E254E2200F79B7C /* String.swift */; };
+		D89D54EA1E296115007D6F5B /* implicitTypes.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D89D54E91E296115007D6F5B /* implicitTypes.BAS */; };
+		D89D54EC1E296189007D6F5B /* explicitTypes.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D89D54EB1E296189007D6F5B /* explicitTypes.BAS */; };
+		D8A0481B1E2964B700D186FC /* if-for.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8A0481A1E2964B700D186FC /* if-for.BAS */; };
+		D8A0481F1E2966E600D186FC /* functions.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8A0481E1E2966E600D186FC /* functions.BAS */; };
+		D8A048211E29672200D186FC /* subs.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8A048201E29672200D186FC /* subs.BAS */; };
 		D8C9A9B31E2939A60010A0E1 /* STDLIB.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8C9A9B21E2939A60010A0E1 /* STDLIB.BAS */; };
+		D8C9A9BC1E294C170010A0E1 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8C9A9BA1E294C170010A0E1 /* Nimble.framework */; };
+		D8C9A9BD1E294C170010A0E1 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8C9A9BB1E294C170010A0E1 /* Quick.framework */; };
+		D8C9A9BF1E294D290010A0E1 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D8C9A9BA1E294C170010A0E1 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D8C9A9C01E294D290010A0E1 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D8C9A9BB1E294C170010A0E1 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D8C9A9CA1E294DD90010A0E1 /* empty.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8C9A9C81E294DD90010A0E1 /* empty.BAS */; };
+		D8C9A9CB1E294DD90010A0E1 /* print.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8C9A9C91E294DD90010A0E1 /* print.BAS */; };
+		D8C9A9CD1E2953610010A0E1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C9A9CC1E2953600010A0E1 /* MainMenu.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,7 +47,23 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		D8C9A9BE1E294D1D0010A0E1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D8C9A9BF1E294D290010A0E1 /* Nimble.framework in CopyFiles */,
+				D8C9A9C01E294D290010A0E1 /* Quick.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		D82580C71E2957C000656CFA /* goto.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = goto.BAS; path = TestCases/goto.BAS; sourceTree = "<group>"; };
+		D829A6C41E29630500F75E1F /* input.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = input.BAS; path = TestCases/input.BAS; sourceTree = "<group>"; };
 		D85E4EA11E29373B00BDA30D /* QBasic2Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QBasic2Swift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D85E4EA51E29373B00BDA30D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D85E4EAA1E29373B00BDA30D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -52,7 +82,18 @@
 		D86E7D121E254E2200F79B7C /* SourcePos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourcePos.swift; sourceTree = "<group>"; };
 		D86E7D131E254E2200F79B7C /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		D87ECF601E224B8D003A82FC /* TestFiles */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestFiles; sourceTree = "<group>"; };
+		D89D54E91E296115007D6F5B /* implicitTypes.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = implicitTypes.BAS; path = TestCases/implicitTypes.BAS; sourceTree = "<group>"; };
+		D89D54EB1E296189007D6F5B /* explicitTypes.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = explicitTypes.BAS; path = TestCases/explicitTypes.BAS; sourceTree = "<group>"; };
+		D8A0481A1E2964B700D186FC /* if-for.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "if-for.BAS"; path = "TestCases/if-for.BAS"; sourceTree = "<group>"; };
+		D8A0481E1E2966E600D186FC /* functions.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = functions.BAS; path = TestCases/functions.BAS; sourceTree = "<group>"; };
+		D8A048201E29672200D186FC /* subs.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = subs.BAS; path = TestCases/subs.BAS; sourceTree = "<group>"; };
 		D8C9A9B21E2939A60010A0E1 /* STDLIB.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = STDLIB.BAS; path = QBasicSTDLIB/STDLIB.BAS; sourceTree = "<group>"; };
+		D8C9A9B81E294B0A0010A0E1 /* cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = cartfile; sourceTree = "<group>"; };
+		D8C9A9BA1E294C170010A0E1 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/Mac/Nimble.framework; sourceTree = "<group>"; };
+		D8C9A9BB1E294C170010A0E1 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/Mac/Quick.framework; sourceTree = "<group>"; };
+		D8C9A9C81E294DD90010A0E1 /* empty.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = empty.BAS; path = TestCases/empty.BAS; sourceTree = "<group>"; };
+		D8C9A9C91E294DD90010A0E1 /* print.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = print.BAS; path = TestCases/print.BAS; sourceTree = "<group>"; };
+		D8C9A9CC1E2953600010A0E1 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +108,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8C9A9BC1E294C170010A0E1 /* Nimble.framework in Frameworks */,
+				D8C9A9BD1E294C170010A0E1 /* Quick.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,6 +125,7 @@
 				D85E4EBF1E29379800BDA30D /* Parser.swift */,
 				D85E4EA51E29373B00BDA30D /* Assets.xcassets */,
 				D85E4EAA1E29373B00BDA30D /* Info.plist */,
+				D8C9A9CC1E2953600010A0E1 /* MainMenu.xib */,
 			);
 			path = QBasic2Swift;
 			sourceTree = "<group>";
@@ -89,6 +133,7 @@
 		D85E4EB21E29373C00BDA30D /* QBasic2SwiftTests */ = {
 			isa = PBXGroup;
 			children = (
+				D8C9A9C71E294DCB0010A0E1 /* TestCases */,
 				D85E4EB31E29373C00BDA30D /* QBasic2SwiftTests.swift */,
 				D85E4EB51E29373C00BDA30D /* Info.plist */,
 			);
@@ -113,12 +158,14 @@
 		D8868E441E1ED36D008FA7DD = {
 			isa = PBXGroup;
 			children = (
+				D8C9A9B81E294B0A0010A0E1 /* cartfile */,
 				D8C9A9B11E29399C0010A0E1 /* STDLIB */,
 				D85E4EA21E29373B00BDA30D /* QBasic2Swift */,
 				D85E4EB21E29373C00BDA30D /* QBasic2SwiftTests */,
 				D86E7D0C1E254BDE00F79B7C /* Parsec */,
 				D8868E4E1E1ED36D008FA7DD /* Products */,
 				D87ECF601E224B8D003A82FC /* TestFiles */,
+				D8C9A9B91E294C160010A0E1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -137,6 +184,31 @@
 				D8C9A9B21E2939A60010A0E1 /* STDLIB.BAS */,
 			);
 			name = STDLIB;
+			sourceTree = "<group>";
+		};
+		D8C9A9B91E294C160010A0E1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D8C9A9BA1E294C170010A0E1 /* Nimble.framework */,
+				D8C9A9BB1E294C170010A0E1 /* Quick.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D8C9A9C71E294DCB0010A0E1 /* TestCases */ = {
+			isa = PBXGroup;
+			children = (
+				D8A048201E29672200D186FC /* subs.BAS */,
+				D8C9A9C81E294DD90010A0E1 /* empty.BAS */,
+				D8C9A9C91E294DD90010A0E1 /* print.BAS */,
+				D82580C71E2957C000656CFA /* goto.BAS */,
+				D89D54E91E296115007D6F5B /* implicitTypes.BAS */,
+				D89D54EB1E296189007D6F5B /* explicitTypes.BAS */,
+				D829A6C41E29630500F75E1F /* input.BAS */,
+				D8A0481A1E2964B700D186FC /* if-for.BAS */,
+				D8A0481E1E2966E600D186FC /* functions.BAS */,
+			);
+			name = TestCases;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,6 +238,7 @@
 				D85E4EAB1E29373C00BDA30D /* Sources */,
 				D85E4EAC1E29373C00BDA30D /* Frameworks */,
 				D85E4EAD1E29373C00BDA30D /* Resources */,
+				D8C9A9BE1E294D1D0010A0E1 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -196,6 +269,7 @@
 					D85E4EAE1E29373C00BDA30D = {
 						CreatedOnToolsVersion = 8.2;
 						DevelopmentTeam = X53G3KMVA6;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 						TestTargetID = D85E4EA01E29373B00BDA30D;
 					};
@@ -227,6 +301,7 @@
 			files = (
 				D8C9A9B31E2939A60010A0E1 /* STDLIB.BAS in Resources */,
 				D85E4EA61E29373B00BDA30D /* Assets.xcassets in Resources */,
+				D8C9A9CD1E2953610010A0E1 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +309,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8C9A9CA1E294DD90010A0E1 /* empty.BAS in Resources */,
+				D8A048211E29672200D186FC /* subs.BAS in Resources */,
+				D8A0481F1E2966E600D186FC /* functions.BAS in Resources */,
+				D89D54EC1E296189007D6F5B /* explicitTypes.BAS in Resources */,
+				D8C9A9CB1E294DD90010A0E1 /* print.BAS in Resources */,
+				D8A0481B1E2964B700D186FC /* if-for.BAS in Resources */,
+				D89D54EA1E296115007D6F5B /* implicitTypes.BAS in Resources */,
+				D82580C81E2957C000656CFA /* goto.BAS in Resources */,
+				D829A6C61E29634000F75E1F /* input.BAS in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,13 +399,19 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = X53G3KMVA6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = QBasic2SwiftTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.VojtaStavik.QBasic2SwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QBasic2Swift.app/Contents/MacOS/QBasic2Swift";
 			};
@@ -332,8 +422,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = X53G3KMVA6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = QBasic2SwiftTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.VojtaStavik.QBasic2SwiftTests;

@@ -135,6 +135,7 @@ struct Variable {
         case long
         case single
         case double
+        case void
     }
     
     enum DefinitionType {
@@ -240,6 +241,7 @@ indirect enum Literal {
     case numberInt(String)
     case numberFloat(String)
     case op(Operator)
+    case braced([Literal])
 }
 
 enum Operator {

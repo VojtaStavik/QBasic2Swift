@@ -1,0 +1,13 @@
+language: objective-c
+osx_image: xcode8.2
+
+before_install:
+  - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
+  - brew update
+  - brew outdated xctool || brew upgrade xctool
+  - brew install carthage
+
+script:
+  - git submodule update --init --recursive
+  - carthage bootstrap --platform macOS
+  - set -o pipefail && xcodebuild -scheme QBasic2Swift -enableCodeCoverage YES build test | xcpretty

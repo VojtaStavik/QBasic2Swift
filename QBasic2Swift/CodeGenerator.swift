@@ -8,6 +8,8 @@
 
 import Foundation
 
+let tabIndent = "    "
+
 protocol Swiftable {
     func toSwift(_ prefix: String) -> String
 }
@@ -91,14 +93,14 @@ struct CodeGenerator: Swiftable {
             }
 
         if mainLoopVars.isEmpty == false {
-            result += "\t// Main loop vars declaration\n" +
-                mainLoopVars.map{ $0.declaration("\t") }.joined(separator: "\n") +
+            result += "\(tabIndent)// Main loop vars declaration\n" +
+                mainLoopVars.map{ $0.declaration(tabIndent) }.joined(separator: "\n") +
             "\n"
         }
 
-        result += RunLoop(blocks: blocks.filter{ $0.label.name != "STDLIBINTERNAL" }, identifier: "main").toSwift("\t")
+        result += RunLoop(blocks: blocks.filter{ $0.label.name != "STDLIBINTERNAL" }, identifier: "main").toSwift(tabIndent)
         
-        result += "}()\n"
+        result += "\n}()\n"
         
         return result
     }
@@ -114,7 +116,7 @@ struct RunLoop: Swiftable {
             if name.isEmpty {
                 return "\"\""
             } else {
-                return name
+                return "\"name\""
             }
         } else {
             return "\"\""
@@ -127,20 +129,19 @@ struct RunLoop: Swiftable {
     func loopStart(_ prefix: String) -> String {
         return [
             "// \(identifier) loop:",
-            "var \(nextLabelVarName) = \"\(firstBlockLabel)\"",
+            "var \(nextLabelVarName) = \(firstBlockLabel)",
             "var \(doneVarName) = false",
             "repeat {",
-            "\tswitch \(nextLabelVarName) {"
+            "\(tabIndent)switch \(nextLabelVarName) {\n",
         ].map { prefix + $0 }.joined(separator: "\n")
     }
 
     func loopEnd(_ prefix: String) -> String {
         return [
-            "\tdefault:",
-            "\t\t\(doneVarName) = true",
-            "\t}",
+            "\(tabIndent)default:",
+            "\(tabIndent)\(tabIndent)\(doneVarName) = true",
+            "\(tabIndent)}",
             "} while \(doneVarName) == false",
-            ""
         ].map { prefix + $0 }.joined(separator: "\n")
     }
 
@@ -150,15 +151,11 @@ struct RunLoop: Swiftable {
             // Needs interpretation using Swift
             var result = "\n" + loopStart(prefix)
             
-            result += "\n"
-            
             blocks.forEach {
-                result += $0.toSwift("\t\t", loopNextLabelVarName: nextLabelVarName)
+                result += $0.toSwift("\(tabIndent)\(tabIndent)", loopNextLabelVarName: nextLabelVarName)
             }
             
-            result += "\n"
-            
-            result += loopEnd(prefix)
+            result += loopEnd(prefix) + "\n"
             return result
         } else {
             // No Switch needed
@@ -171,27 +168,29 @@ struct RunLoop: Swiftable {
 
 extension Block: Swiftable {
     
-    internal func toSwift(_ prefix: String) -> String {
+    internal func toSwift(_ prefix: String = "") -> String {
         return toSwift(prefix, loopNextLabelVarName: "")
     }
     
     func toSwift(_ prefix: String = "",  loopNextLabelVarName name: String) -> String {
-        var result = prefix + "case \(label.toSwift("")):\n"
+        var result = prefix + "case \(label.toSwift("")):"
         
-        result += toSwiftWithoutSwitch(prefix + "\t", loopNextLabelVarName: name)
+        result += toSwiftWithoutSwitch(prefix + tabIndent, loopNextLabelVarName: name)
         
         if case .goto(_)? = statements.last {
             // Do nothing, just the new line
             result += "\n"
         } else {
-            result += prefix + "\tfallthrough\n"
+            result += prefix + "\(tabIndent)fallthrough\n"
         }
         
         return result
     }
     
     func toSwiftWithoutSwitch(_ prefix: String = "", loopNextLabelVarName name: String) -> String {
-        return statements.map { $0.toSwift(prefix, loopNextLabelVarName: name) }
+        return
+            "\n" +
+            statements.map { $0.toSwift(prefix, loopNextLabelVarName: name) }
             .filter { $0.isEmpty == false }
             .joined(separator: "\n") + "\n"
     }
@@ -245,17 +244,19 @@ extension Statement: Swiftable {
             
             switch type {
             case .double, .single:
-                info = (variableType: "Double", defaultValue: "?? 0")
+                info = (variableType: "Double", defaultValue: " ?? 0")
             case .integer, .long:
-                info = (variableType: "Int", defaultValue: "?? 0")
+                info = (variableType: "Int", defaultValue: " ?? 0")
             case .string:
                 info = (variableType: "String", defaultValue: "")
+            case .void:
+                fatalError("this shouldn't happen")
             }
             
             result +=
                 prefix + "let _ = {\n" +
-                prefix + "\tlet input = readLine() ?? \"\"\n" +
-                prefix + "\t\(var_.toSwift()) = \(info.variableType)(input) \(info.defaultValue)\n" +
+                prefix + "\(tabIndent)let input = readLine() ?? \"\"\n" +
+                prefix + "\(tabIndent)\(var_.toSwift()) = \(info.variableType)(input)\(info.defaultValue)\n" +
                 prefix + "}()\n"
 
             return result
@@ -264,16 +265,16 @@ extension Statement: Swiftable {
             return prefix + variable.toSwift() + " = " + expression.toSwift()
             
         case .forLoop(index: let variable, start: let start, end: let end, step: let step, block: let block):
-            let blockCode = block.map { $0.toSwift(prefix + "\t") + "\n" }.joined()
+            let blockCode = block.map { $0.toSwift(prefix + tabIndent) + "\n" }.joined()
             return prefix + "for " + variable.toSwift() +
                 " in stride(from: \(start.toSwift()), to: \(end.toSwift()), by: \(step.toSwift())) {\n" +
                 blockCode +
                 prefix + "}"
             
         case .if_(expression: let exp, block: let block, elseBlock: let elseBlock, elseIf: let elseif):
-            let blockCode = block.map { $0.toSwift(prefix + "\t", loopNextLabelVarName: loopNextLabelVarName) }.joined()
+            let blockCode = block.map { $0.toSwift(prefix + tabIndent, loopNextLabelVarName: loopNextLabelVarName) }.joined(separator: "\n")
             var result = prefix + "if " + exp.toSwift() + " {\n" +
-                blockCode +
+                blockCode + "\n" +
                 prefix + "}"
             
             if elseBlock != nil && elseif != nil {
@@ -293,9 +294,9 @@ extension Statement: Swiftable {
             }
             
             if finalElseBlock.isEmpty == false {
-                let blockCode = finalElseBlock.map { $0.toSwift(prefix + "\t") }.joined()
+                let blockCode = finalElseBlock.map { $0.toSwift(prefix + tabIndent) }.joined(separator: "\n")
                 result += " else {\n" +
-                    blockCode +
+                    blockCode + "\n" +
                     prefix + "}"
             }
             
@@ -327,7 +328,9 @@ extension Statement: Swiftable {
                 paramsAndValues.append(paramNames[index].sanitizedVariableName + ": " + parameter.toSwift())
             })
             
-            return prefix + "\(sub.name.sanitizedVariableName)(\(paramsAndValues.joined(separator: ", "))"
+            let r = "\(sub.name.sanitizedVariableName)(\(paramsAndValues.joined(separator: ", ")))"
+            
+            return prefix + r
             
         case .funcReturn(value: let exp):
             return prefix + "return \(exp.toSwift())\n"
@@ -383,12 +386,12 @@ extension Function: Swiftable {
         }
         
         if localVars.isEmpty == false {
-            result += "\t// Local vars declaration\n" +
-                localVars.map{ $0.declaration(prefix + "\t") }.joined(separator: "\n") +
+            result += "\(tabIndent)// Local vars declaration\n" +
+                localVars.map{ $0.declaration(prefix + tabIndent) }.joined(separator: "\n") +
             "\n"
         }
         
-        result += RunLoop(blocks: blocks ?? [], identifier: name).toSwift("\t")
+        result += RunLoop(blocks: blocks ?? [], identifier: name).toSwift(tabIndent)
         
         result += "}\n\n"
 
@@ -413,6 +416,9 @@ extension Variable: Swiftable {
         
         case .string:
             return prefix + "var \(toSwift()): \(typeName) = \"\""
+            
+        case .void:
+            fatalError("This shouldn't happen")
         }
     }
     
@@ -432,6 +438,8 @@ extension Variable: Swiftable {
             return "Double"
         case .string:
             return "String"
+        case .void:
+            return "Void"
         }
     }
 }
@@ -471,6 +479,9 @@ extension Literal: Swiftable {
             return prefix + s
         case let .op(o):
             return o.toSwift(prefix)
+        case .braced(let literals):
+            print("\(literals)")
+            return prefix + literals.map{ $0.toSwift() }.joined()
         }
     }
 }

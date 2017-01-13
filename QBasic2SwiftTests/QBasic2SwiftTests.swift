@@ -6,31 +6,46 @@
 //  Copyright © 2017 VojtaStavik. All rights reserved.
 //
 
-import XCTest
+import Quick
+import Nimble
 @testable import QBasic2Swift
 
-class QBasic2SwiftTests: XCTestCase {
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+class QBasic2SwiftTests: QuickSpec {
+    override func spec() {
+        
+        let testCasesPath = Bundle(for: type(of: self)).paths(forResourcesOfType: "BAS", inDirectory: nil)
+        
+        let parser = QBasicParser()
+        
+        beforeEach {
+            // TODO -> make these variables instant?
+            Program.functions.removeAll()
+            Program.globalVarsPool.removeAll()
+            Program.mainLoopVarsPool.removeAll()
+        }
+        
+        for path in testCasesPath {
+            let contents = try! String(contentsOfFile: path)
+            let components = contents.components(separatedBy: "~~~~~~~~~~~~~~~~~~~~")
+            
+            describe(path.components(separatedBy: "/").last!) {
+                it("is compiled correctly") {
+                    let result = parse(parser.program, "", components[0].characters)
+                    if case .right(let rawBlocks) = result {
+                        let code = CodeGenerator(blocks: rawBlocks).toSwift("", onlyUserCode: true)
+                                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                        
+                        let reference = components[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                        
+//                        print("\n" + code + "\n")
+//                        print("\n" + reference + "\n")
+                        
+                        expect(code) == reference
+                    } else {
+                        fail()
+                    }
+                }
+            }
         }
     }
-    
 }

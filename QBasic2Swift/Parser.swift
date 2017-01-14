@@ -50,6 +50,7 @@ extension QBasicParser {
                     <|> attempt(self.printCommand(scope))
                     <|> attempt(self.declaration(scope))
                     <|> attempt(self.forLoop(scope))
+                    <|> attempt(self.loop(scope))
                     <|> attempt(self.ifStatement(scope))
                     <|> attempt(self.clsCommand)
                     <|> attempt(self.goto)
@@ -226,6 +227,21 @@ extension QBasicParser {
                     }
                 }
             })()
+        }
+    }
+
+    // DO
+    //     x = x + 1
+    // LOOP UNTIL x > 10
+    func loop(_ scope: FunctionName?) -> () -> StringParser<Statement?> {
+        return {
+            return (spaces >>> Keyword.DO >>> optionMaybe(self.expression(scope)) <<< endOfLine >>- { preExp in
+                        self.statements(scope) >>- { block in
+                            spaces >>> Keyword.LOOP >>> spaces >>> optionMaybe(self.expression(scope)) >>- { postExp in
+                                create(.loop(preCondition: preExp, postCondition: postExp, block: block))
+                            }
+                        }
+                })()
         }
     }
     
@@ -573,7 +589,7 @@ extension QBasicParser {
     func expression(_ scope: FunctionName? = nil) -> () -> StringParser<Expression> {
         return {
             return (
-                (attempt(self.statement(scope)) >>- { stat_ in
+                attempt(self.statement(scope) >>- { stat_ in
                         if let stat = stat_ {
                             return create(.statement(stat))
                         } else {
@@ -586,6 +602,28 @@ extension QBasicParser {
                 <|> (attempt(self.variable(definedBy: nil, scope: scope)) >>- {
                     return create(.variable($0))
                     })
+                <|> attempt(self.whileExpression(scope))
+                <|> attempt(self.untilExpression(scope))
+            )()
+        }
+    }
+    
+    func whileExpression(_ scope: FunctionName? = nil) -> () -> StringParser<Expression> {
+        return {
+            return (
+                spaces >>> Keyword.WHILE >>> spaces >>> self.expression(scope) >>- {
+                    create(.`while`($0))
+                }
+            )()
+        }
+    }
+
+    func untilExpression(_ scope: FunctionName? = nil) -> () -> StringParser<Expression> {
+        return {
+            return (
+                spaces >>> Keyword.UNTIL >>> spaces >>> self.expression(scope) >>- {
+                    create(.until($0))
+                }
             )()
         }
     }

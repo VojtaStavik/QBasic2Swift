@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D82580C81E2957C000656CFA /* goto.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D82580C71E2957C000656CFA /* goto.BAS */; };
 		D829A6C61E29634000F75E1F /* input.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D829A6C41E29630500F75E1F /* input.BAS */; };
+		D8425B8D1E2A6F89009C7B3C /* doLoop.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8425B8C1E2A6F89009C7B3C /* doLoop.BAS */; };
 		D85E4EA61E29373B00BDA30D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D85E4EA51E29373B00BDA30D /* Assets.xcassets */; };
 		D85E4EB41E29373C00BDA30D /* QBasic2SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85E4EB31E29373C00BDA30D /* QBasic2SwiftTests.swift */; };
 		D85E4EC01E29379800BDA30D /* AST.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85E4EBC1E29379800BDA30D /* AST.swift */; };
@@ -64,6 +65,7 @@
 /* Begin PBXFileReference section */
 		D82580C71E2957C000656CFA /* goto.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = goto.BAS; path = TestCases/goto.BAS; sourceTree = "<group>"; };
 		D829A6C41E29630500F75E1F /* input.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = input.BAS; path = TestCases/input.BAS; sourceTree = "<group>"; };
+		D8425B8C1E2A6F89009C7B3C /* doLoop.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = doLoop.BAS; path = TestCases/doLoop.BAS; sourceTree = "<group>"; };
 		D85E4EA11E29373B00BDA30D /* QBasic2Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QBasic2Swift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D85E4EA51E29373B00BDA30D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D85E4EAA1E29373B00BDA30D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 		D8C9A9C71E294DCB0010A0E1 /* TestCases */ = {
 			isa = PBXGroup;
 			children = (
+				D8425B8C1E2A6F89009C7B3C /* doLoop.BAS */,
 				D8A048201E29672200D186FC /* subs.BAS */,
 				D8C9A9C81E294DD90010A0E1 /* empty.BAS */,
 				D8C9A9C91E294DD90010A0E1 /* print.BAS */,
@@ -310,6 +313,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8C9A9CA1E294DD90010A0E1 /* empty.BAS in Resources */,
+				D8425B8D1E2A6F89009C7B3C /* doLoop.BAS in Resources */,
 				D8A048211E29672200D186FC /* subs.BAS in Resources */,
 				D8A0481F1E2966E600D186FC /* functions.BAS in Resources */,
 				D89D54EC1E296189007D6F5B /* explicitTypes.BAS in Resources */,

@@ -38,6 +38,7 @@ indirect enum Statement {
     
     case print([(Operator?, Expression)], terminator: Terminator)
     case forLoop(index: Variable, start: Expression, end: Expression, step: Expression, block: [Statement])
+    case loop(preCondition: Expression?, postCondition: Expression?, block: [Statement])
     case if_(expression: Expression, block: [Statement], elseBlock: [Statement]?, elseIf: Statement?)
     case assignment(Variable, Expression)
     case declaration(Variable)
@@ -61,6 +62,8 @@ indirect enum Expression {
     case literals([Literal])
     case variable(Variable)
     case statement(Statement)
+    case `while`(Expression)
+    case until(Expression)
 }
 
 struct Variable {
@@ -290,6 +293,10 @@ struct Keyword {
     static func STDLIBFUNCTION() -> StringParser<String>  { return string("_FUNCTION")() }
     static func ENDSUB() -> StringParser<String>    { return string("END SUB")() }
     static func ENDFUNCTION() -> StringParser<String> { return string("END FUNCTION")() }
+    static func DO() -> StringParser<String>        { return string("DO")() }
+    static func LOOP() -> StringParser<String>      { return string("LOOP")() }
+    static func UNTIL() -> StringParser<String>     { return string("UNTIL")() }
+    static func WHILE() -> StringParser<String>     { return string("WHILE")() }
     
     static let all: [String] = [
         "PRINT",
@@ -316,5 +323,9 @@ struct Keyword {
         "DECLARE",
         "SUB",
         "FUNCTION",
+        "DO",
+        "LOOP",
+        "UNTIL",
+        "WHILE",
     ]
 }

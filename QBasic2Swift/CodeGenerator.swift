@@ -270,6 +270,24 @@ extension Statement: Swiftable {
                 " in stride(from: \(start.toSwift()), to: \(end.toSwift()), by: \(step.toSwift())) {\n" +
                 blockCode +
                 prefix + "}"
+
+        case .loop(preCondition: let pre, postCondition: let post, block: let block):
+            if pre != nil && post != nil {
+                fatalError("Loop can't have both pre and post condition.")
+            }
+
+            let blockCode = block.map { $0.toSwift(prefix + tabIndent) + "\n" }.joined()
+
+            if let preCondition = pre {
+                return  prefix + "while (\(preCondition.toSwift())) {\n" +
+                        blockCode +
+                        prefix + "}"
+            } else if let postCondition = post {
+                return  prefix + "repeat {\n" +
+                        blockCode +
+                        prefix + "} while (\(postCondition.toSwift()))"
+            }
+            fatalError("Loop without condition")
             
         case .if_(expression: let exp, block: let block, elseBlock: let elseBlock, elseIf: let elseif):
             let blockCode = block.map { $0.toSwift(prefix + tabIndent, loopNextLabelVarName: loopNextLabelVarName) }.joined(separator: "\n")
@@ -464,6 +482,10 @@ extension Expression: Swiftable {
             return v.toSwift(prefix)
         case .statement(let stat):
             return stat.toSwift(prefix)
+        case .while(let exp):
+            return exp.toSwift(prefix)
+        case .until(let exp):
+            return prefix + "((\(exp.toSwift())) == false)"
         }
     }
 }

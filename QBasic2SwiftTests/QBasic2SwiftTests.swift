@@ -35,10 +35,12 @@ class QBasic2SwiftTests: QuickSpec {
                         let code = CodeGenerator(blocks: rawBlocks).toSwift("", onlyUserCode: true)
                                     .trimmingCharacters(in: .whitespacesAndNewlines)
                         
-                        let reference = components[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                        let reference = components[1]
+                                        .trimmingCharacters(in: .whitespacesAndNewlines)
+                                        .replacingOccurrences(of: "\r", with: "")
                         
-//                        print("\n" + code + "\n")
-//                        print("\n" + reference + "\n")
+                        print("\n" + code + "\n")
+                        print("\n" + reference + "\n")
                         
                         expect(code) == reference
                     } else {

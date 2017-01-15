@@ -1,6 +1,6 @@
 //
 //  CodeGenerator.swift
-//  QBasicSwift
+//  QBasic2Swift
 //
 //  Created by Stavik, Vojta on 06/01/17.
 //  Copyright © 2017 VojtaStavik. All rights reserved.
@@ -259,11 +259,7 @@ extension Statement: Swiftable {
                 fatalError("this shouldn't happen")
             }
             
-            result +=
-                prefix + "let _ = {\n" +
-                prefix + "\(tabIndent)let input = readLine() ?? \"\"\n" +
-                prefix + "\(tabIndent)\(var_.toSwift()) = \(info.variableType)(input)\(info.defaultValue)\n" +
-                prefix + "}()\n"
+            result += prefix + "\(var_.toSwift()) = \(info.variableType)(readLine() ?? \"\")\(info.defaultValue)\n"
 
             return result
             

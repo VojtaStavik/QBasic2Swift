@@ -1,6 +1,6 @@
 //
 //  main.swift
-//  QBasicSwift
+//  QBasic2Swift
 //
 //  Created by Stavik, Vojta on 05/01/17.
 //  Copyright © 2017 VojtaStavik. All rights reserved.

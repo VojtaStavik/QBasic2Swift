@@ -23,9 +23,11 @@ STDLIBINTERNAL:
 //SWIFT func == (l: Int, r: Double) -> Bool { return Double(l) == r }
 //SWIFT func != (l: Double, r: Int) -> Bool { return l != Double(r) }
 //SWIFT func != (l: Int, r: Double) -> Bool { return Double(l) != r }
-
+//SWIFT // We use &= as the assignment operator so we can assign Int to Double etc.
 //SWIFT func &= ( left: inout Int, right: Double) { left = Int(right) }
+//SWIFT func &= ( left: inout Int, right: Int) { left = right }
 //SWIFT func &= ( left: inout Double, right: Int) { left = Double(right) }
+//SWIFT func &= ( left: inout Double, right: Double) { left = right }
 //SWIFT func &= ( left: inout String, right: String) { left = right }
 
 _FUNCTION ABS AS INTEGER (absInternal AS INTEGER)

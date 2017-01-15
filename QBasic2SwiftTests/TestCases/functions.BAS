@@ -29,15 +29,9 @@ _ = {
     var Answer: Double = 0
     // CLS is not implemented yet
     print("Enter First Number: ", terminator: "")
-    let _ = {
-        let input = readLine() ?? ""
-        Num1 = Double(input) ?? 0
-    }()
+    Num1 = Double(readLine() ?? "") ?? 0
     print("Enter Second Number: ", terminator: "")
-    let _ = {
-        let input = readLine() ?? ""
-        Num2 = Double(input) ?? 0
-    }()
+    Num2 = Double(readLine() ?? "") ?? 0
     Answer &= Power__single(y: Num1, x: Num2)
     print("\("The Answer Is:")"+"\(Answer)", terminator: "\n")
     print("\(STR__string(158))", terminator: "\n")

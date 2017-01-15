@@ -5,7 +5,6 @@ Line:
 PRINT "End"
 ~~~~~~~~~~~~~~~~~~~~
 _ = {
-
     // main loop:
     var mainNextLabel__internal = ""
     var mainLoopDone__internal = false
@@ -24,5 +23,4 @@ _ = {
             mainLoopDone__internal = true
         }
     } while mainLoopDone__internal == false
-
 }()

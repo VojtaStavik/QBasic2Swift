@@ -22,14 +22,12 @@ _ = {
     var Num1: Int = 0
     var Num3: Double = 0
     var Header: String = ""
-
     // CLS is not implemented yet
-    Header = "This is another example"
-    Num1 = 5
-    Num2 = 56000
-    Num3 = 45.635
-    Num4 = 66000.5634
+    Header &= "This is another example"
+    Num1 &= 5
+    Num2 &= 56000
+    Num3 &= 45.635
+    Num4 &= 66000.5634
     print("\(Header)", terminator: "\n")
     print("\(Num1+Num2+Num3+Num4)", terminator: "\n")
-
 }()

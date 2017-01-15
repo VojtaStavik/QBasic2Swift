@@ -31,7 +31,6 @@ END SUB
 func AnotherSub(greeting__string: String) -> Void {
     // Local vars declaration
     var i__int: Int = 0
-
     // AnotherSub loop:
     var AnotherSubNextLabel__internal = ""
     var AnotherSubLoopDone__internal = false
@@ -42,12 +41,12 @@ func AnotherSub(greeting__string: String) -> Void {
             print("\("I Am Going To Do A Calculation")", terminator: "\n")
             print("\("25 + 5 * 4 =")"+"\(25+5*4)", terminator: "\n")
             print("\("The greeting is: ")"+"\(greeting__string)", terminator: "\n")
-            i__int = 0
+            i__int &= 0
             fallthrough
         case "counter":
             if i__int<10 {
                 print("\(i__int)", terminator: "\n")
-                i__int = i__int+1
+                i__int &= i__int+1
                 AnotherSubNextLabel__internal = "counter"
                 continue
             } else {
@@ -59,20 +58,15 @@ func AnotherSub(greeting__string: String) -> Void {
         }
     } while AnotherSubLoopDone__internal == false
 }
-
 func MySub() -> Void {
-
     print("\("Yes, I Am Here")", terminator: "\n")
 }
-
 _ = {
     // Main loop vars declaration
     var i__int: Int = 0
-
     // CLS is not implemented yet
     print("\("Sub, Are You Here?")", terminator: "\n")
     MySub()
     print("\("Let's Run Another Sub")", terminator: "\n")
     AnotherSub(greeting__string: ";=)")
-
 }()

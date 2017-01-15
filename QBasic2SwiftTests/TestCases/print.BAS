@@ -16,7 +16,6 @@ PRINT "5 * (2 + 10) ="; 5 * (2 + 10)
 PRINT ,"Hey"
 ~~~~~~~~~~~~~~~~~~~~
 _ = {
-
     print("\("Sound check ... 1, 2, 3 ...")", terminator: "\n")
     print("\(5+5)", terminator: "\n")
     print("\("5")"+"\t"+"\("+")"+"\t"+"\("5")"+"\t"+"\("=")"+"\(5+5)", terminator: "\n")
@@ -31,5 +30,4 @@ _ = {
     print("\("(5 * 2) + 10 =")"+"\((5*2)+10)", terminator: "\n")
     print("\("5 * (2 + 10) =")"+"\(5*(2+10))", terminator: "\n")
     print("\t"+"\("Hey")", terminator: "\n")
-
 }()

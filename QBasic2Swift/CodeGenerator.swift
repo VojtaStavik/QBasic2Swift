@@ -102,6 +102,12 @@ struct CodeGenerator: Swiftable {
         
         result += "\n}()\n"
         
+        // Remove empty lines
+        result = result
+                    .components(separatedBy: .newlines)
+                    .filter { $0.isEmpty != true }
+                    .joined(separator: "\n")
+        
         return result
     }
 }
@@ -197,7 +203,7 @@ extension Block: Swiftable {
 }
 
 extension Statement: Swiftable {
-    internal func toSwift(_ prefix: String) -> String {
+    internal func toSwift(_ prefix: String = "") -> String {
         return toSwift(prefix, loopNextLabelVarName: "")
     }
 
@@ -262,7 +268,7 @@ extension Statement: Swiftable {
             return result
             
         case .assignment(let variable, let expression):
-            return prefix + variable.toSwift() + " = " + expression.toSwift()
+            return prefix + variable.toSwift() + " &= " + expression.toSwift()
             
         case .forLoop(index: let variable, start: let start, end: let end, step: let step, block: let block):
             let blockCode = block.map { $0.toSwift(prefix + tabIndent) + "\n" }.joined()
@@ -318,6 +324,19 @@ extension Statement: Swiftable {
                     prefix + "}"
             }
             
+            return result
+            
+        case .select(expression: let exp, cases: let cases):
+            var mutableCases = cases
+            let defaultCases = mutableCases.filter{ $0.value == nil}
+            if defaultCases.isEmpty {
+                // In swift, switch must be exhaustive. We need to add Default case
+                mutableCases.append(Case.emptyDefault)
+            }
+            
+            var result = prefix + "switch \(exp.toSwift()) {\n"
+            result += mutableCases.map{ $0.toSwift(prefix) }.joined(separator: "\n")
+            result += prefix + "}"
             return result
             
         case .cls:
@@ -411,7 +430,7 @@ extension Function: Swiftable {
         
         result += RunLoop(blocks: blocks ?? [], identifier: name).toSwift(tabIndent)
         
-        result += "}\n\n"
+        result += prefix + "}\n\n"
 
         return result
     }
@@ -486,6 +505,10 @@ extension Expression: Swiftable {
             return exp.toSwift(prefix)
         case .until(let exp):
             return prefix + "((\(exp.toSwift())) == false)"
+        case .braced(let expressions):
+            return prefix + expressions.map{ $0.toSwift() }.joined()
+        case .compound(let expressions):
+            return expressions.map{ $0.toSwift(prefix) }.joined()
         }
     }
 }
@@ -493,7 +516,7 @@ extension Expression: Swiftable {
 extension Literal: Swiftable {
     func toSwift(_ prefix: String = "") -> String {
         switch self {
-        case .vaiableName(let s), .functionName(let s):
+        case .variableName(let s), .functionName(let s):
             return prefix + s.sanitizedVariableName
         case .string(let s):
             return prefix + "\"\(s)\""
@@ -501,10 +524,34 @@ extension Literal: Swiftable {
             return prefix + s
         case let .op(o):
             return o.toSwift(prefix)
-        case .braced(let literals):
-            print("\(literals)")
-            return prefix + literals.map{ $0.toSwift() }.joined()
         }
+    }
+}
+
+extension Case: Swiftable {
+
+    func toSwift(_ prefix: String) -> String {
+        var result: String
+        if let value = self.value {
+            result = prefix + "case \(value.toSwift()):\n"
+        } else {
+            result = prefix + "default:\n"
+        }
+        
+        var blockCode = statements.map { $0.toSwift(prefix + tabIndent) + "\n" }.joined()
+        
+        if blockCode.isEmpty {
+            // Case mustn't be empty
+            blockCode += prefix + tabIndent + "break\n"
+        }
+        
+        result += blockCode
+        
+        return result
+    }
+    
+    static var emptyDefault: Case {
+        return Case(value: nil, statements: [])
     }
 }
 
@@ -541,7 +588,10 @@ extension Operator: Swiftable {
             return prefix + "*"
         case .division:
             return prefix + "/"
-            
+        case .or:
+            return prefix + "||"
+        case .and:
+            return prefix + "&&"
         }
     }
 }

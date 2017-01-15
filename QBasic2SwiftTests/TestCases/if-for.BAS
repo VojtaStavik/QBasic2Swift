@@ -11,9 +11,6 @@ FOR x% = 1 TO 100
 NEXT x%
 ~~~~~~~~~~~~~~~~~~~~
 _ = {
-    // Main loop vars declaration
-    var x__int: Int = 0
-
     for x__int in stride(from: 1, to: 100, by: 1) {
         if x__int%15==0 {
             print("\("FizzBuzz")", terminator: "\n")
@@ -29,5 +26,4 @@ _ = {
             }
         }
     }
-
 }()

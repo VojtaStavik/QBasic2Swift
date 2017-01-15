@@ -26,7 +26,6 @@ _ = {
     var Num1__int: Int = 0
     var Num8__double: Double = 0
     var Num7__double: Double = 0
-
     // main loop:
     var mainNextLabel__internal = "name"
     var mainLoopDone__internal = false
@@ -34,15 +33,15 @@ _ = {
         switch mainNextLabel__internal {
         case "10":
             // CLS is not implemented yet
-            Header__string = "This is an example program"
-            Num1__int = 5
-            Num2__int = 6
-            Num3__long = 45000
-            Num4__long = 54000
-            Num5__single = 4.5
-            Num6__single = 6.75
-            Num7__double = 56000.25
-            Num8__double = 89000.34
+            Header__string &= "This is an example program"
+            Num1__int &= 5
+            Num2__int &= 6
+            Num3__long &= 45000
+            Num4__long &= 54000
+            Num5__single &= 4.5
+            Num6__single &= 6.75
+            Num7__double &= 56000.25
+            Num8__double &= 89000.34
             fallthrough
         case "50":
             print("\(Header__string)", terminator: "\n")
@@ -55,5 +54,4 @@ _ = {
             mainLoopDone__internal = true
         }
     } while mainLoopDone__internal == false
-
 }()

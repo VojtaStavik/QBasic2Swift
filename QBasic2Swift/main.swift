@@ -17,7 +17,7 @@ if NSClassFromString("XCTestCase") != nil {
     let parser = QBasicParser()
     
     let file: String
-    file = "/Users/vstavik/Documents/OSS/QBasicSwift/QBasic2SwiftTests/TestCases/doLoop.BAS"
+    file = "/Users/vstavik/Documents/OSS/QBasicSwift/QBasic2SwiftTests/TestCases/guessNumber.BAS_"
     
     
     let stdLib = try! String(contentsOfFile: Bundle.main.path(forResource: "STDLIB", ofType: "BAS")!)

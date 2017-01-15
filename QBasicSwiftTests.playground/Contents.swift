@@ -1,8 +1,6 @@
 //: Playground - noun: a place where people can play
 
 import Foundation
-
-
 // Because QBasic is not that strict about types, we need these helper functions
 // to make Swift work the same way.
 func + (l: Double, r: Int) -> Double { return l + Double(r) }
@@ -21,97 +19,46 @@ func == (l: Double, r: Int) -> Bool { return l == Double(r) }
 func == (l: Int, r: Double) -> Bool { return Double(l) == r }
 func != (l: Double, r: Int) -> Bool { return l != Double(r) }
 func != (l: Int, r: Double) -> Bool { return Double(l) != r }
-
+func &= ( left: inout Int, right: Double) { left = Int(right) }
+func &= ( left: inout Double, right: Int) { left = Double(right) }
+func &= ( left: inout String, right: String) { left = right }
 // STDLIB Functions
-func LOG(num__double: Double) -> Double {
-    
-    return log(num__double)
-}
-
-func ABS(absInternal: Int) -> Int {
-    
-    if absInternal>=0 {
-        return absInternal
-        
-    } else {
-        return -absInternal
-        
-    }
-}
-
-func STR__string(num__double: Double) -> String {
-    
-    return String(num__double)
-}
-
 func LCASE__string(text__string: String) -> String {
-    
     return text__string.lowercased()
 }
-
-
-// User functions
-func AnotherSub(greeting__string: String) -> Void {
-    // Local vars declaration
-    var i__int: Int = 0
-    
-    // AnotherSub loop:
-    var AnotherSubNextLabel__internal = ""
-    var AnotherSubLoopDone__internal = false
-    repeat {
-        switch AnotherSubNextLabel__internal {
-        case "":
-            print("\("This Is AnotherSub Running")", terminator: "\n")
-            print("\("I Am Going To Do A Calculation")", terminator: "\n")
-            print("\("25 + 5 * 4 =")"+"\(25+5*4)", terminator: "\n")
-            print("\("The greeting is: ")"+"\(greeting__string)", terminator: "\n")
-            i__int = 0
-            fallthrough
-        case "counter":
-            if i__int<10 {
-                print("\(i__int)", terminator: "\n")
-                i__int = i__int+1
-                AnotherSubNextLabel__internal = "counter"
-                continue
-            } else {
-                print("\("We're done here: ")"+"\(i__int)", terminator: "\n")
-            }
-            fallthrough
-        default:
-            AnotherSubLoopDone__internal = true
-        }
-    } while AnotherSubLoopDone__internal == false
+func LOG(num__double: Double) -> Double {
+    return log(num__double)
 }
-
-func MySub() -> Void {
-    
-    print("\("Yes, I Am Here")", terminator: "\n")
+func RND() -> Double {
+    return Double(arc4random()) / 0xFFFFFFFF
 }
-
+func ABS(absInternal: Int) -> Int {
+    if absInternal>=0 {
+        return absInternal
+    } else {
+        return -absInternal
+    }
+}
+func STR__string(num__double: Double) -> String {
+    return String(num__double)
+}
+func UCASE__string(text__string: String) -> String {
+    return text__string.uppercased()
+}
 _ = {
-    // Main loop vars declaration
-    var x: Int = 0
-    
-    // CLS is not implemented yet
-    x = 1
-    repeat {
-        print("\("Post condition UNTIL")", terminator: "\n")
-        x = x+1
-    } while (((x>10) == false))
-    x = 1
-    repeat {
-        print("\("Post condition WHILE")", terminator: "\n")
-        x = x+1
-    } while (x<11)
-    x = 1
-    while (((x>10) == false)) {
-        print("\("Pre condition UNTIL")", terminator: "\n")
-        x = x+1
+    for x__int in stride(from: 1, to: 100, by: 1) {
+        if x__int%15==0 {
+            print("\("FizzBuzz")", terminator: "\n")
+        } else {
+            if x__int%5==0 {
+                print("\("Buzz")", terminator: "\n")
+            } else {
+                if x__int%3==0 {
+                    print("\("Fizz")", terminator: "\n")
+                } else {
+                    print("\(x__int)", terminator: "\n")
+                }
+            }
+        }
     }
-    x = 1
-    while (x<11) {
-        print("\("Pre condition WHILE")", terminator: "\n")
-        x = x+1
-    }
-    
 }()

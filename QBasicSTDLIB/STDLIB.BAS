@@ -24,7 +24,9 @@ STDLIBINTERNAL:
 //SWIFT func != (l: Double, r: Int) -> Bool { return l != Double(r) }
 //SWIFT func != (l: Int, r: Double) -> Bool { return Double(l) != r }
 
-
+//SWIFT func &= ( left: inout Int, right: Double) { left = Int(right) }
+//SWIFT func &= ( left: inout Double, right: Int) { left = Double(right) }
+//SWIFT func &= ( left: inout String, right: String) { left = right }
 
 _FUNCTION ABS AS INTEGER (absInternal AS INTEGER)
     IF absInternal >= 0 THEN
@@ -38,8 +40,16 @@ _FUNCTION LCASE$ (text$)
     //SWIFT return text__string.lowercased()
 END FUNCTION
 
+_FUNCTION UCASE$ (text$)
+    //SWIFT return text__string.uppercased()
+END FUNCTION
+
 _FUNCTION LOG AS DOUBLE (num#)
     //SWIFT return log(num__double)
+END FUNCTION
+
+_FUNCTION RND AS DOUBLE ()
+    //SWIFT return Double(arc4random()) / 0xFFFFFFFF
 END FUNCTION
 
 ' How to make func work for all number types? Generics?

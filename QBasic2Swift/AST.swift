@@ -40,12 +40,14 @@ indirect enum Statement {
     case forLoop(index: Variable, start: Expression, end: Expression, step: Expression, block: [Statement])
     case loop(preCondition: Expression?, postCondition: Expression?, block: [Statement])
     case if_(expression: Expression, block: [Statement], elseBlock: [Statement]?, elseIf: Statement?)
+    case select(expression: Expression, cases: [Case])
     case assignment(Variable, Expression)
     case declaration(Variable)
     case goto(label: Label)
     case input(text: Expression?, terminator: Operator?, variable: Variable)
     case cls
     case comment(String)
+    case randomizeTimer
     
     // Functions
     case funcDeclaration(Function, parameters: [Variable])
@@ -59,6 +61,8 @@ indirect enum Statement {
 
 
 indirect enum Expression {
+    case compound([Expression])
+    case braced([Expression])
     case literals([Literal])
     case variable(Variable)
     case statement(Statement)
@@ -236,15 +240,22 @@ extension Label: Swiftable {
     }
 }
 
+struct Case {
+    let value: Expression? // If value == nil -> default case
+    let statements: [Statement]
+    
+    var identifier: String {
+        return String((value?.toSwift() ?? "default").hash)
+    }
+}
 
 indirect enum Literal {
-    case vaiableName(String)
+    case variableName(String)
     case functionName(String)
     case string(String)
     case numberInt(String)
     case numberFloat(String)
     case op(Operator)
-    case braced([Literal])
 }
 
 enum Operator {
@@ -263,6 +274,8 @@ enum Operator {
     case semicolon
     case multiplication
     case division
+    case or
+    case and
 }
 
 struct Keyword {
@@ -297,6 +310,12 @@ struct Keyword {
     static func LOOP() -> StringParser<String>      { return string("LOOP")() }
     static func UNTIL() -> StringParser<String>     { return string("UNTIL")() }
     static func WHILE() -> StringParser<String>     { return string("WHILE")() }
+    static func SELECT() -> StringParser<String>    { return string("SELECT")() }
+    static func CASE() -> StringParser<String>      { return string("CASE")() }
+    static func ENDSELECT() -> StringParser<String> { return string("END SELECT")() }
+    static func AND() -> StringParser<String>       { return string("AND")() }
+    static func OR() -> StringParser<String>        { return string("OR")() }
+    static func RANDOMIZETIMER() -> StringParser<String> { return string("RANDOMIZE TIMER")() }
     
     static let all: [String] = [
         "PRINT",
@@ -327,5 +346,11 @@ struct Keyword {
         "LOOP",
         "UNTIL",
         "WHILE",
+        "SELECT",
+        "CASE",
+        "AND",
+        "OR",
+        "RANDOMIZE",
+        "TIMER",
     ]
 }

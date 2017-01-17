@@ -44,23 +44,31 @@ KEYWORD     	#@# AS
 KEYWORD     	#@# SINGLE
 KEYWORD     	#@# CLS
 KEYWORD     	#@# INPUT
-STRING      	#@# Enter First Number:
+STRING      	#@# Enter First Number: 
 OPERATOR    	#@# ,
 IDENTIFIER  	#@# Num1
 KEYWORD     	#@# INPUT
-STRING      	#@# Enter Second Number:
+STRING      	#@# Enter Second Number: 
 OPERATOR    	#@# ,
 IDENTIFIER  	#@# Num2
 IDENTIFIER  	#@# Answer
 OPERATOR    	#@# =
-IDENTIFIER  	#@# Power!(Num1,
-IDENTIFIER  	#@# Num2)
+IDENTIFIER  	#@# Power!
+OPERATOR    	#@# (
+IDENTIFIER  	#@# Num1
+OPERATOR    	#@# ,
+IDENTIFIER  	#@# Num2
+OPERATOR    	#@# )
 KEYWORD     	#@# PRINT
 STRING      	#@# The Answer Is:
 OPERATOR    	#@# ;
 IDENTIFIER  	#@# Answer
 KEYWORD     	#@# PRINT
-IDENTIFIER  	#@# STR$(158)
+IDENTIFIER  	#@# ST
+IDENTIFIER  	#@# R$
+OPERATOR    	#@# (
+NUMBER      	#@# 158
+OPERATOR    	#@# )
 KEYWORD     	#@# FUNCTION
 IDENTIFIER  	#@# Power!
 OPERATOR    	#@# (

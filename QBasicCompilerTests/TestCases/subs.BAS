@@ -27,6 +27,81 @@ SUB MySub
     PRINT "Yes, I Am Here"
 END SUB
 ~~~~~~~~~~~~~~~~~~~~
+KEYWORD     	#@# DECLARE
+KEYWORD     	#@# SUB
+IDENTIFIER  	#@# MySub
+OPERATOR    	#@# (
+OPERATOR    	#@# )
+KEYWORD     	#@# DECLARE
+KEYWORD     	#@# SUB
+IDENTIFIER  	#@# AnotherSub
+OPERATOR    	#@# (
+IDENTIFIER  	#@# greeting$
+OPERATOR    	#@# )
+KEYWORD     	#@# CLS
+KEYWORD     	#@# PRINT
+STRING      	#@# Sub, Are You Here?
+IDENTIFIER  	#@# MySub
+KEYWORD     	#@# PRINT
+STRING      	#@# Let's Run Another Sub
+IDENTIFIER  	#@# AnotherSub
+STRING      	#@# ;=)
+KEYWORD     	#@# SUB
+IDENTIFIER  	#@# AnotherSub
+OPERATOR    	#@# (
+IDENTIFIER  	#@# greeting$
+OPERATOR    	#@# )
+KEYWORD     	#@# PRINT
+STRING      	#@# This Is AnotherSub Running
+KEYWORD     	#@# PRINT
+STRING      	#@# I Am Going To Do A Calculation
+KEYWORD     	#@# PRINT
+STRING      	#@# 25 + 5 * 4 =
+OPERATOR    	#@# ;
+NUMBER      	#@# 25
+OPERATOR    	#@# +
+NUMBER      	#@# 5
+OPERATOR    	#@# *
+NUMBER      	#@# 4
+KEYWORD     	#@# PRINT
+STRING      	#@# The greeting is: 
+OPERATOR    	#@# ;
+IDENTIFIER  	#@# greeting$
+IDENTIFIER  	#@# i%
+OPERATOR    	#@# =
+NUMBER      	#@# 0
+IDENTIFIER  	#@# counter
+OPERATOR    	#@# :
+KEYWORD     	#@# IF
+IDENTIFIER  	#@# i%
+OPERATOR    	#@# <
+NUMBER      	#@# 10
+KEYWORD     	#@# THEN
+KEYWORD     	#@# PRINT
+IDENTIFIER  	#@# i%
+IDENTIFIER  	#@# i%
+OPERATOR    	#@# =
+IDENTIFIER  	#@# i%
+OPERATOR    	#@# +
+NUMBER      	#@# 1
+KEYWORD     	#@# GOTO
+IDENTIFIER  	#@# counter
+KEYWORD     	#@# ELSE
+KEYWORD     	#@# PRINT
+STRING      	#@# We're done here: 
+OPERATOR    	#@# ;
+IDENTIFIER  	#@# i%
+KEYWORD     	#@# END
+KEYWORD     	#@# IF
+KEYWORD     	#@# END
+KEYWORD     	#@# SUB
+KEYWORD     	#@# SUB
+IDENTIFIER  	#@# MySub
+KEYWORD     	#@# PRINT
+STRING      	#@# Yes, I Am Here
+KEYWORD     	#@# END
+KEYWORD     	#@# SUB
+~~~~~~~~~~~~~~~~~~~~
 // User functions
 func AnotherSub(greeting__string: String) -> Void {
     // Local vars declaration

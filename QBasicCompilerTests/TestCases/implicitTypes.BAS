@@ -15,6 +15,57 @@ PRINT Num6! / Num5!
 PRINT Num8# + Num2%
 PRINT Num4& / Num1%
 ~~~~~~~~~~~~~~~~~~~~
+NUMBER      	#@# 10
+KEYWORD     	#@# CLS
+IDENTIFIER  	#@# Header$
+OPERATOR    	#@# =
+STRING      	#@# This is an example program
+IDENTIFIER  	#@# Num1%
+OPERATOR    	#@# =
+NUMBER      	#@# 5
+IDENTIFIER  	#@# Num2%
+OPERATOR    	#@# =
+NUMBER      	#@# 6
+IDENTIFIER  	#@# Num3&
+OPERATOR    	#@# =
+NUMBER      	#@# 45000
+IDENTIFIER  	#@# Num4&
+OPERATOR    	#@# =
+NUMBER      	#@# 54000
+IDENTIFIER  	#@# Num5!
+OPERATOR    	#@# =
+NUMBER      	#@# 4.5
+IDENTIFIER  	#@# Num6!
+OPERATOR    	#@# =
+NUMBER      	#@# 6.75
+IDENTIFIER  	#@# Num7#
+OPERATOR    	#@# =
+NUMBER      	#@# 56000.25
+IDENTIFIER  	#@# Num8#
+OPERATOR    	#@# =
+NUMBER      	#@# 89000.34
+NUMBER      	#@# 50
+KEYWORD     	#@# PRINT
+IDENTIFIER  	#@# Header$
+KEYWORD     	#@# PRINT
+IDENTIFIER  	#@# Num1%
+OPERATOR    	#@# +
+IDENTIFIER  	#@# Num2%
+OPERATOR    	#@# +
+IDENTIFIER  	#@# Num3&
+KEYWORD     	#@# PRINT
+IDENTIFIER  	#@# Num6!
+OPERATOR    	#@# /
+IDENTIFIER  	#@# Num5!
+KEYWORD     	#@# PRINT
+IDENTIFIER  	#@# Num8#
+OPERATOR    	#@# +
+IDENTIFIER  	#@# Num2%
+KEYWORD     	#@# PRINT
+IDENTIFIER  	#@# Num4&
+OPERATOR    	#@# /
+IDENTIFIER  	#@# Num1%
+~~~~~~~~~~~~~~~~~~~~
 _ = {
     // Main loop vars declaration
     var Num2__int: Int = 0

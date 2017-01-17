@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D85E4EA01E29373B00BDA30D"
-               BuildableName = "QBasic2Swift.app"
-               BlueprintName = "QBasic2Swift"
+               BlueprintIdentifier = "D8425B961E2D09D1009C7B3C"
+               BuildableName = "QBasicCompiler.framework"
+               BlueprintName = "QBasicCompiler"
                ReferencedContainer = "container:QBasic2Swift.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,36 +28,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D85E4EAE1E29373C00BDA30D"
-               BuildableName = "QBasic2SwiftTests.xctest"
-               BlueprintName = "QBasic2SwiftTests"
-               ReferencedContainer = "container:QBasic2Swift.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D8425B9E1E2D09D1009C7B3C"
-               BuildableName = "QBasicCompilerTests.xctest"
-               BlueprintName = "QBasicCompilerTests"
-               ReferencedContainer = "container:QBasic2Swift.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D85E4EA01E29373B00BDA30D"
-            BuildableName = "QBasic2Swift.app"
-            BlueprintName = "QBasic2Swift"
-            ReferencedContainer = "container:QBasic2Swift.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -71,16 +42,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D85E4EA01E29373B00BDA30D"
-            BuildableName = "QBasic2Swift.app"
-            BlueprintName = "QBasic2Swift"
+            BlueprintIdentifier = "D8425B961E2D09D1009C7B3C"
+            BuildableName = "QBasicCompiler.framework"
+            BlueprintName = "QBasicCompiler"
             ReferencedContainer = "container:QBasic2Swift.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -90,16 +60,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D85E4EA01E29373B00BDA30D"
-            BuildableName = "QBasic2Swift.app"
-            BlueprintName = "QBasic2Swift"
+            BlueprintIdentifier = "D8425B961E2D09D1009C7B3C"
+            BuildableName = "QBasicCompiler.framework"
+            BlueprintName = "QBasicCompiler"
             ReferencedContainer = "container:QBasic2Swift.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

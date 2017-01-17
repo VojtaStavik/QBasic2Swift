@@ -10,4 +10,4 @@ before_install:
 script:
   - git submodule update --init --recursive
   - carthage bootstrap --platform macOS
-  - set -o pipefail && xcodebuild -scheme QBasic2Swift -enableCodeCoverage YES build test | xcpretty
+  - set -o pipefail && xcodebuild -scheme QBasicCompilerTests -enableCodeCoverage YES build test | xcpretty

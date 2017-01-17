@@ -7,13 +7,39 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D82580C81E2957C000656CFA /* goto.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D82580C71E2957C000656CFA /* goto.BAS */; };
-		D829A6C61E29634000F75E1F /* input.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D829A6C41E29630500F75E1F /* input.BAS */; };
-		D8425B8D1E2A6F89009C7B3C /* doLoop.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8425B8C1E2A6F89009C7B3C /* doLoop.BAS */; };
-		D8425B8F1E2B8BA0009C7B3C /* selectCase.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8425B8E1E2B8BA0009C7B3C /* selectCase.BAS */; };
-		D8425B911E2B9944009C7B3C /* GuessNumber.BAS_ in Resources */ = {isa = PBXBuildFile; fileRef = D8425B901E2B9944009C7B3C /* GuessNumber.BAS_ */; };
+		D8425BA91E2D09D1009C7B3C /* QBasicCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = D8425B991E2D09D1009C7B3C /* QBasicCompiler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D8425BAC1E2D09D1009C7B3C /* QBasicCompiler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8425B971E2D09D1009C7B3C /* QBasicCompiler.framework */; };
+		D8425BAD1E2D09D1009C7B3C /* QBasicCompiler.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D8425B971E2D09D1009C7B3C /* QBasicCompiler.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D8425BB51E2D09E2009C7B3C /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86E7D0D1E254E2200F79B7C /* Character.swift */; };
+		D8425BB61E2D09E2009C7B3C /* Combinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86E7D0E1E254E2200F79B7C /* Combinator.swift */; };
+		D8425BB71E2D09E2009C7B3C /* Compatibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86E7D0F1E254E2200F79B7C /* Compatibility.swift */; };
+		D8425BB81E2D09E2009C7B3C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86E7D101E254E2200F79B7C /* Error.swift */; };
+		D8425BB91E2D09E2009C7B3C /* Primitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86E7D111E254E2200F79B7C /* Primitive.swift */; };
+		D8425BBA1E2D09E2009C7B3C /* SourcePos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86E7D121E254E2200F79B7C /* SourcePos.swift */; };
+		D8425BBB1E2D09E2009C7B3C /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86E7D131E254E2200F79B7C /* String.swift */; };
+		D8425BBD1E2D0A28009C7B3C /* Lexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8425BBC1E2D0A28009C7B3C /* Lexer.swift */; };
+		D8425BDC1E2D114F009C7B3C /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8425BDB1E2D114F009C7B3C /* Helpers.swift */; };
+		D8425C081E2D2DB3009C7B3C /* QBasicCompiler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8425B971E2D09D1009C7B3C /* QBasicCompiler.framework */; };
+		D8425C111E2D2DDF009C7B3C /* LexerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8425C0E1E2D2DDF009C7B3C /* LexerTests.swift */; };
+		D8425C121E2D2DDF009C7B3C /* QBasicCompilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8425C0F1E2D2DDF009C7B3C /* QBasicCompilerTests.swift */; };
+		D8425C161E2D2DFB009C7B3C /* input.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8425C151E2D2DFB009C7B3C /* input.BAS */; };
+		D8425C221E2D2E03009C7B3C /* functions.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8425C171E2D2E03009C7B3C /* functions.BAS */; };
+		D8425C231E2D2E03009C7B3C /* doLoop.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8425C181E2D2E03009C7B3C /* doLoop.BAS */; };
+		D8425C241E2D2E03009C7B3C /* empty.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8425C191E2D2E03009C7B3C /* empty.BAS */; };
+		D8425C251E2D2E03009C7B3C /* explicitTypes.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8425C1A1E2D2E03009C7B3C /* explicitTypes.BAS */; };
+		D8425C261E2D2E03009C7B3C /* goto.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8425C1B1E2D2E03009C7B3C /* goto.BAS */; };
+		D8425C271E2D2E03009C7B3C /* GuessNumber.BAS_ in Resources */ = {isa = PBXBuildFile; fileRef = D8425C1C1E2D2E03009C7B3C /* GuessNumber.BAS_ */; };
+		D8425C281E2D2E03009C7B3C /* if-for.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8425C1D1E2D2E03009C7B3C /* if-for.BAS */; };
+		D8425C291E2D2E03009C7B3C /* implicitTypes.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8425C1E1E2D2E03009C7B3C /* implicitTypes.BAS */; };
+		D8425C2A1E2D2E03009C7B3C /* print.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8425C1F1E2D2E03009C7B3C /* print.BAS */; };
+		D8425C2B1E2D2E03009C7B3C /* selectCase.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8425C201E2D2E03009C7B3C /* selectCase.BAS */; };
+		D8425C2C1E2D2E03009C7B3C /* subs.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8425C211E2D2E03009C7B3C /* subs.BAS */; };
+		D8425C2D1E2D2E4D009C7B3C /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8C9A9BB1E294C170010A0E1 /* Quick.framework */; };
+		D8425C2E1E2D2E4D009C7B3C /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8C9A9BA1E294C170010A0E1 /* Nimble.framework */; };
+		D8425C301E2D2F65009C7B3C /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D8C9A9BA1E294C170010A0E1 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D8425C311E2D2F65009C7B3C /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D8C9A9BB1E294C170010A0E1 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D8425C331E2D3125009C7B3C /* TestCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8425C321E2D3125009C7B3C /* TestCases.swift */; };
 		D85E4EA61E29373B00BDA30D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D85E4EA51E29373B00BDA30D /* Assets.xcassets */; };
-		D85E4EB41E29373C00BDA30D /* QBasic2SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85E4EB31E29373C00BDA30D /* QBasic2SwiftTests.swift */; };
 		D85E4EC01E29379800BDA30D /* AST.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85E4EBC1E29379800BDA30D /* AST.swift */; };
 		D85E4EC11E29379800BDA30D /* CodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85E4EBD1E29379800BDA30D /* CodeGenerator.swift */; };
 		D85E4EC21E29379800BDA30D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85E4EBE1E29379800BDA30D /* main.swift */; };
@@ -25,57 +51,78 @@
 		D85E4EC81E29381500BDA30D /* Primitive.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86E7D111E254E2200F79B7C /* Primitive.swift */; };
 		D85E4EC91E29381500BDA30D /* SourcePos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86E7D121E254E2200F79B7C /* SourcePos.swift */; };
 		D85E4ECA1E29381500BDA30D /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86E7D131E254E2200F79B7C /* String.swift */; };
-		D89D54EA1E296115007D6F5B /* implicitTypes.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D89D54E91E296115007D6F5B /* implicitTypes.BAS */; };
-		D89D54EC1E296189007D6F5B /* explicitTypes.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D89D54EB1E296189007D6F5B /* explicitTypes.BAS */; };
-		D8A0481B1E2964B700D186FC /* if-for.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8A0481A1E2964B700D186FC /* if-for.BAS */; };
-		D8A0481F1E2966E600D186FC /* functions.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8A0481E1E2966E600D186FC /* functions.BAS */; };
-		D8A048211E29672200D186FC /* subs.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8A048201E29672200D186FC /* subs.BAS */; };
 		D8C9A9B31E2939A60010A0E1 /* STDLIB.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8C9A9B21E2939A60010A0E1 /* STDLIB.BAS */; };
-		D8C9A9BC1E294C170010A0E1 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8C9A9BA1E294C170010A0E1 /* Nimble.framework */; };
-		D8C9A9BD1E294C170010A0E1 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8C9A9BB1E294C170010A0E1 /* Quick.framework */; };
-		D8C9A9BF1E294D290010A0E1 /* Nimble.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D8C9A9BA1E294C170010A0E1 /* Nimble.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D8C9A9C01E294D290010A0E1 /* Quick.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = D8C9A9BB1E294C170010A0E1 /* Quick.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D8C9A9CA1E294DD90010A0E1 /* empty.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8C9A9C81E294DD90010A0E1 /* empty.BAS */; };
-		D8C9A9CB1E294DD90010A0E1 /* print.BAS in Resources */ = {isa = PBXBuildFile; fileRef = D8C9A9C91E294DD90010A0E1 /* print.BAS */; };
 		D8C9A9CD1E2953610010A0E1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D8C9A9CC1E2953600010A0E1 /* MainMenu.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D85E4EB01E29373C00BDA30D /* PBXContainerItemProxy */ = {
+		D8425BAA1E2D09D1009C7B3C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D8868E451E1ED36D008FA7DD /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D85E4EA01E29373B00BDA30D;
-			remoteInfo = QBasic2Swift;
+			remoteGlobalIDString = D8425B961E2D09D1009C7B3C;
+			remoteInfo = QBasicCompiler;
+		};
+		D8425C091E2D2DB3009C7B3C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D8868E451E1ED36D008FA7DD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D8425B961E2D09D1009C7B3C;
+			remoteInfo = QBasicCompiler;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		D8C9A9BE1E294D1D0010A0E1 /* CopyFiles */ = {
+		D8425BB31E2D09D1009C7B3C /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D8C9A9BF1E294D290010A0E1 /* Nimble.framework in CopyFiles */,
-				D8C9A9C01E294D290010A0E1 /* Quick.framework in CopyFiles */,
+				D8425BAD1E2D09D1009C7B3C /* QBasicCompiler.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8425C2F1E2D2F56009C7B3C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D8425C301E2D2F65009C7B3C /* Nimble.framework in CopyFiles */,
+				D8425C311E2D2F65009C7B3C /* Quick.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		D82580C71E2957C000656CFA /* goto.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = goto.BAS; path = TestCases/goto.BAS; sourceTree = "<group>"; };
-		D829A6C41E29630500F75E1F /* input.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = input.BAS; path = TestCases/input.BAS; sourceTree = "<group>"; };
-		D8425B8C1E2A6F89009C7B3C /* doLoop.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = doLoop.BAS; path = TestCases/doLoop.BAS; sourceTree = "<group>"; };
-		D8425B8E1E2B8BA0009C7B3C /* selectCase.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = selectCase.BAS; path = TestCases/selectCase.BAS; sourceTree = "<group>"; };
-		D8425B901E2B9944009C7B3C /* GuessNumber.BAS_ */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = GuessNumber.BAS_; path = TestCases/GuessNumber.BAS_; sourceTree = "<group>"; };
+		D8425B971E2D09D1009C7B3C /* QBasicCompiler.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = QBasicCompiler.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8425B991E2D09D1009C7B3C /* QBasicCompiler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QBasicCompiler.h; sourceTree = "<group>"; };
+		D8425B9A1E2D09D1009C7B3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D8425BBC1E2D0A28009C7B3C /* Lexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lexer.swift; sourceTree = "<group>"; };
+		D8425BDB1E2D114F009C7B3C /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		D8425C031E2D2DB3009C7B3C /* QBasicCompilerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QBasicCompilerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8425C071E2D2DB3009C7B3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D8425C0E1E2D2DDF009C7B3C /* LexerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LexerTests.swift; sourceTree = "<group>"; };
+		D8425C0F1E2D2DDF009C7B3C /* QBasicCompilerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QBasicCompilerTests.swift; sourceTree = "<group>"; };
+		D8425C151E2D2DFB009C7B3C /* input.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = input.BAS; path = TestCases/input.BAS; sourceTree = "<group>"; };
+		D8425C171E2D2E03009C7B3C /* functions.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = functions.BAS; path = TestCases/functions.BAS; sourceTree = "<group>"; };
+		D8425C181E2D2E03009C7B3C /* doLoop.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = doLoop.BAS; path = TestCases/doLoop.BAS; sourceTree = "<group>"; };
+		D8425C191E2D2E03009C7B3C /* empty.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = empty.BAS; path = TestCases/empty.BAS; sourceTree = "<group>"; };
+		D8425C1A1E2D2E03009C7B3C /* explicitTypes.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = explicitTypes.BAS; path = TestCases/explicitTypes.BAS; sourceTree = "<group>"; };
+		D8425C1B1E2D2E03009C7B3C /* goto.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = goto.BAS; path = TestCases/goto.BAS; sourceTree = "<group>"; };
+		D8425C1C1E2D2E03009C7B3C /* GuessNumber.BAS_ */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = GuessNumber.BAS_; path = TestCases/GuessNumber.BAS_; sourceTree = "<group>"; };
+		D8425C1D1E2D2E03009C7B3C /* if-for.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "if-for.BAS"; path = "TestCases/if-for.BAS"; sourceTree = "<group>"; };
+		D8425C1E1E2D2E03009C7B3C /* implicitTypes.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = implicitTypes.BAS; path = TestCases/implicitTypes.BAS; sourceTree = "<group>"; };
+		D8425C1F1E2D2E03009C7B3C /* print.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = print.BAS; path = TestCases/print.BAS; sourceTree = "<group>"; };
+		D8425C201E2D2E03009C7B3C /* selectCase.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = selectCase.BAS; path = TestCases/selectCase.BAS; sourceTree = "<group>"; };
+		D8425C211E2D2E03009C7B3C /* subs.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = subs.BAS; path = TestCases/subs.BAS; sourceTree = "<group>"; };
+		D8425C321E2D3125009C7B3C /* TestCases.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCases.swift; sourceTree = "<group>"; };
 		D85E4EA11E29373B00BDA30D /* QBasic2Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QBasic2Swift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D85E4EA51E29373B00BDA30D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D85E4EAA1E29373B00BDA30D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D85E4EAF1E29373C00BDA30D /* QBasic2SwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QBasic2SwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D85E4EB31E29373C00BDA30D /* QBasic2SwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QBasic2SwiftTests.swift; sourceTree = "<group>"; };
-		D85E4EB51E29373C00BDA30D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D85E4EBC1E29379800BDA30D /* AST.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AST.swift; sourceTree = "<group>"; };
 		D85E4EBD1E29379800BDA30D /* CodeGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeGenerator.swift; sourceTree = "<group>"; };
 		D85E4EBE1E29379800BDA30D /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -87,41 +134,84 @@
 		D86E7D111E254E2200F79B7C /* Primitive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Primitive.swift; sourceTree = "<group>"; };
 		D86E7D121E254E2200F79B7C /* SourcePos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourcePos.swift; sourceTree = "<group>"; };
 		D86E7D131E254E2200F79B7C /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
-		D87ECF601E224B8D003A82FC /* TestFiles */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestFiles; sourceTree = "<group>"; };
-		D89D54E91E296115007D6F5B /* implicitTypes.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = implicitTypes.BAS; path = TestCases/implicitTypes.BAS; sourceTree = "<group>"; };
-		D89D54EB1E296189007D6F5B /* explicitTypes.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = explicitTypes.BAS; path = TestCases/explicitTypes.BAS; sourceTree = "<group>"; };
-		D8A0481A1E2964B700D186FC /* if-for.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "if-for.BAS"; path = "TestCases/if-for.BAS"; sourceTree = "<group>"; };
-		D8A0481E1E2966E600D186FC /* functions.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = functions.BAS; path = TestCases/functions.BAS; sourceTree = "<group>"; };
-		D8A048201E29672200D186FC /* subs.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = subs.BAS; path = TestCases/subs.BAS; sourceTree = "<group>"; };
 		D8C9A9B21E2939A60010A0E1 /* STDLIB.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = STDLIB.BAS; path = QBasicSTDLIB/STDLIB.BAS; sourceTree = "<group>"; };
 		D8C9A9B81E294B0A0010A0E1 /* cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = cartfile; sourceTree = "<group>"; };
 		D8C9A9BA1E294C170010A0E1 /* Nimble.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Nimble.framework; path = Carthage/Build/Mac/Nimble.framework; sourceTree = "<group>"; };
 		D8C9A9BB1E294C170010A0E1 /* Quick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quick.framework; path = Carthage/Build/Mac/Quick.framework; sourceTree = "<group>"; };
-		D8C9A9C81E294DD90010A0E1 /* empty.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = empty.BAS; path = TestCases/empty.BAS; sourceTree = "<group>"; };
-		D8C9A9C91E294DD90010A0E1 /* print.BAS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = print.BAS; path = TestCases/print.BAS; sourceTree = "<group>"; };
 		D8C9A9CC1E2953600010A0E1 /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D85E4E9E1E29373B00BDA30D /* Frameworks */ = {
+		D8425B931E2D09D1009C7B3C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D85E4EAC1E29373C00BDA30D /* Frameworks */ = {
+		D8425C001E2D2DB3009C7B3C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8C9A9BC1E294C170010A0E1 /* Nimble.framework in Frameworks */,
-				D8C9A9BD1E294C170010A0E1 /* Quick.framework in Frameworks */,
+				D8425C2D1E2D2E4D009C7B3C /* Quick.framework in Frameworks */,
+				D8425C2E1E2D2E4D009C7B3C /* Nimble.framework in Frameworks */,
+				D8425C081E2D2DB3009C7B3C /* QBasicCompiler.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D85E4E9E1E29373B00BDA30D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8425BAC1E2D09D1009C7B3C /* QBasicCompiler.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D8425B981E2D09D1009C7B3C /* QBasicCompiler */ = {
+			isa = PBXGroup;
+			children = (
+				D8425B991E2D09D1009C7B3C /* QBasicCompiler.h */,
+				D8425B9A1E2D09D1009C7B3C /* Info.plist */,
+				D8425BBC1E2D0A28009C7B3C /* Lexer.swift */,
+				D8425BDB1E2D114F009C7B3C /* Helpers.swift */,
+			);
+			path = QBasicCompiler;
+			sourceTree = "<group>";
+		};
+		D8425C041E2D2DB3009C7B3C /* QBasicCompilerTests */ = {
+			isa = PBXGroup;
+			children = (
+				D8425C141E2D2DF0009C7B3C /* Test Cases */,
+				D8425C0E1E2D2DDF009C7B3C /* LexerTests.swift */,
+				D8425C0F1E2D2DDF009C7B3C /* QBasicCompilerTests.swift */,
+				D8425C071E2D2DB3009C7B3C /* Info.plist */,
+				D8425C321E2D3125009C7B3C /* TestCases.swift */,
+			);
+			path = QBasicCompilerTests;
+			sourceTree = "<group>";
+		};
+		D8425C141E2D2DF0009C7B3C /* Test Cases */ = {
+			isa = PBXGroup;
+			children = (
+				D8425C171E2D2E03009C7B3C /* functions.BAS */,
+				D8425C181E2D2E03009C7B3C /* doLoop.BAS */,
+				D8425C191E2D2E03009C7B3C /* empty.BAS */,
+				D8425C1A1E2D2E03009C7B3C /* explicitTypes.BAS */,
+				D8425C1B1E2D2E03009C7B3C /* goto.BAS */,
+				D8425C1C1E2D2E03009C7B3C /* GuessNumber.BAS_ */,
+				D8425C1D1E2D2E03009C7B3C /* if-for.BAS */,
+				D8425C1E1E2D2E03009C7B3C /* implicitTypes.BAS */,
+				D8425C1F1E2D2E03009C7B3C /* print.BAS */,
+				D8425C201E2D2E03009C7B3C /* selectCase.BAS */,
+				D8425C211E2D2E03009C7B3C /* subs.BAS */,
+				D8425C151E2D2DFB009C7B3C /* input.BAS */,
+			);
+			name = "Test Cases";
+			sourceTree = "<group>";
+		};
 		D85E4EA21E29373B00BDA30D /* QBasic2Swift */ = {
 			isa = PBXGroup;
 			children = (
@@ -134,16 +224,6 @@
 				D8C9A9CC1E2953600010A0E1 /* MainMenu.xib */,
 			);
 			path = QBasic2Swift;
-			sourceTree = "<group>";
-		};
-		D85E4EB21E29373C00BDA30D /* QBasic2SwiftTests */ = {
-			isa = PBXGroup;
-			children = (
-				D8C9A9C71E294DCB0010A0E1 /* TestCases */,
-				D85E4EB31E29373C00BDA30D /* QBasic2SwiftTests.swift */,
-				D85E4EB51E29373C00BDA30D /* Info.plist */,
-			);
-			path = QBasic2SwiftTests;
 			sourceTree = "<group>";
 		};
 		D86E7D0C1E254BDE00F79B7C /* Parsec */ = {
@@ -167,10 +247,10 @@
 				D8C9A9B81E294B0A0010A0E1 /* cartfile */,
 				D8C9A9B11E29399C0010A0E1 /* STDLIB */,
 				D85E4EA21E29373B00BDA30D /* QBasic2Swift */,
-				D85E4EB21E29373C00BDA30D /* QBasic2SwiftTests */,
 				D86E7D0C1E254BDE00F79B7C /* Parsec */,
+				D8425B981E2D09D1009C7B3C /* QBasicCompiler */,
+				D8425C041E2D2DB3009C7B3C /* QBasicCompilerTests */,
 				D8868E4E1E1ED36D008FA7DD /* Products */,
-				D87ECF601E224B8D003A82FC /* TestFiles */,
 				D8C9A9B91E294C160010A0E1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -179,7 +259,8 @@
 			isa = PBXGroup;
 			children = (
 				D85E4EA11E29373B00BDA30D /* QBasic2Swift.app */,
-				D85E4EAF1E29373C00BDA30D /* QBasic2SwiftTests.xctest */,
+				D8425B971E2D09D1009C7B3C /* QBasicCompiler.framework */,
+				D8425C031E2D2DB3009C7B3C /* QBasicCompilerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -201,28 +282,57 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		D8C9A9C71E294DCB0010A0E1 /* TestCases */ = {
-			isa = PBXGroup;
-			children = (
-				D8425B901E2B9944009C7B3C /* GuessNumber.BAS_ */,
-				D8425B8E1E2B8BA0009C7B3C /* selectCase.BAS */,
-				D8425B8C1E2A6F89009C7B3C /* doLoop.BAS */,
-				D8A048201E29672200D186FC /* subs.BAS */,
-				D8C9A9C81E294DD90010A0E1 /* empty.BAS */,
-				D8C9A9C91E294DD90010A0E1 /* print.BAS */,
-				D82580C71E2957C000656CFA /* goto.BAS */,
-				D89D54E91E296115007D6F5B /* implicitTypes.BAS */,
-				D89D54EB1E296189007D6F5B /* explicitTypes.BAS */,
-				D829A6C41E29630500F75E1F /* input.BAS */,
-				D8A0481A1E2964B700D186FC /* if-for.BAS */,
-				D8A0481E1E2966E600D186FC /* functions.BAS */,
-			);
-			name = TestCases;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		D8425B941E2D09D1009C7B3C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8425BA91E2D09D1009C7B3C /* QBasicCompiler.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		D8425B961E2D09D1009C7B3C /* QBasicCompiler */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8425BB21E2D09D1009C7B3C /* Build configuration list for PBXNativeTarget "QBasicCompiler" */;
+			buildPhases = (
+				D8425B921E2D09D1009C7B3C /* Sources */,
+				D8425B931E2D09D1009C7B3C /* Frameworks */,
+				D8425B941E2D09D1009C7B3C /* Headers */,
+				D8425B951E2D09D1009C7B3C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QBasicCompiler;
+			productName = QBasicCompiler;
+			productReference = D8425B971E2D09D1009C7B3C /* QBasicCompiler.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D8425C021E2D2DB3009C7B3C /* QBasicCompilerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8425C0B1E2D2DB3009C7B3C /* Build configuration list for PBXNativeTarget "QBasicCompilerTests" */;
+			buildPhases = (
+				D8425BFF1E2D2DB3009C7B3C /* Sources */,
+				D8425C001E2D2DB3009C7B3C /* Frameworks */,
+				D8425C011E2D2DB3009C7B3C /* Resources */,
+				D8425C2F1E2D2F56009C7B3C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D8425C0A1E2D2DB3009C7B3C /* PBXTargetDependency */,
+			);
+			name = QBasicCompilerTests;
+			productName = QBasicCompilerTests;
+			productReference = D8425C031E2D2DB3009C7B3C /* QBasicCompilerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		D85E4EA01E29373B00BDA30D /* QBasic2Swift */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D85E4EBA1E29373C00BDA30D /* Build configuration list for PBXNativeTarget "QBasic2Swift" */;
@@ -230,34 +340,17 @@
 				D85E4E9D1E29373B00BDA30D /* Sources */,
 				D85E4E9E1E29373B00BDA30D /* Frameworks */,
 				D85E4E9F1E29373B00BDA30D /* Resources */,
+				D8425BB31E2D09D1009C7B3C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D8425BAB1E2D09D1009C7B3C /* PBXTargetDependency */,
 			);
 			name = QBasic2Swift;
 			productName = QBasic2Swift;
 			productReference = D85E4EA11E29373B00BDA30D /* QBasic2Swift.app */;
 			productType = "com.apple.product-type.application";
-		};
-		D85E4EAE1E29373C00BDA30D /* QBasic2SwiftTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D85E4EBB1E29373C00BDA30D /* Build configuration list for PBXNativeTarget "QBasic2SwiftTests" */;
-			buildPhases = (
-				D85E4EAB1E29373C00BDA30D /* Sources */,
-				D85E4EAC1E29373C00BDA30D /* Frameworks */,
-				D85E4EAD1E29373C00BDA30D /* Resources */,
-				D8C9A9BE1E294D1D0010A0E1 /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				D85E4EB11E29373C00BDA30D /* PBXTargetDependency */,
-			);
-			name = QBasic2SwiftTests;
-			productName = QBasic2SwiftTests;
-			productReference = D85E4EAF1E29373C00BDA30D /* QBasic2SwiftTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -269,18 +362,21 @@
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = VojtaStavik;
 				TargetAttributes = {
+					D8425B961E2D09D1009C7B3C = {
+						CreatedOnToolsVersion = 8.2;
+						DevelopmentTeam = X53G3KMVA6;
+						ProvisioningStyle = Automatic;
+					};
+					D8425C021E2D2DB3009C7B3C = {
+						CreatedOnToolsVersion = 8.2;
+						DevelopmentTeam = X53G3KMVA6;
+						ProvisioningStyle = Automatic;
+					};
 					D85E4EA01E29373B00BDA30D = {
 						CreatedOnToolsVersion = 8.2;
 						DevelopmentTeam = X53G3KMVA6;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
-					};
-					D85E4EAE1E29373C00BDA30D = {
-						CreatedOnToolsVersion = 8.2;
-						DevelopmentTeam = X53G3KMVA6;
-						LastSwiftMigration = 0820;
-						ProvisioningStyle = Automatic;
-						TestTargetID = D85E4EA01E29373B00BDA30D;
 					};
 				};
 			};
@@ -298,12 +394,39 @@
 			projectRoot = "";
 			targets = (
 				D85E4EA01E29373B00BDA30D /* QBasic2Swift */,
-				D85E4EAE1E29373C00BDA30D /* QBasic2SwiftTests */,
+				D8425B961E2D09D1009C7B3C /* QBasicCompiler */,
+				D8425C021E2D2DB3009C7B3C /* QBasicCompilerTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		D8425B951E2D09D1009C7B3C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8425C011E2D2DB3009C7B3C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8425C2A1E2D2E03009C7B3C /* print.BAS in Resources */,
+				D8425C241E2D2E03009C7B3C /* empty.BAS in Resources */,
+				D8425C281E2D2E03009C7B3C /* if-for.BAS in Resources */,
+				D8425C271E2D2E03009C7B3C /* GuessNumber.BAS_ in Resources */,
+				D8425C2B1E2D2E03009C7B3C /* selectCase.BAS in Resources */,
+				D8425C2C1E2D2E03009C7B3C /* subs.BAS in Resources */,
+				D8425C221E2D2E03009C7B3C /* functions.BAS in Resources */,
+				D8425C161E2D2DFB009C7B3C /* input.BAS in Resources */,
+				D8425C231E2D2E03009C7B3C /* doLoop.BAS in Resources */,
+				D8425C251E2D2E03009C7B3C /* explicitTypes.BAS in Resources */,
+				D8425C261E2D2E03009C7B3C /* goto.BAS in Resources */,
+				D8425C291E2D2E03009C7B3C /* implicitTypes.BAS in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D85E4E9F1E29373B00BDA30D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -314,28 +437,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D85E4EAD1E29373C00BDA30D /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D8C9A9CA1E294DD90010A0E1 /* empty.BAS in Resources */,
-				D8425B8D1E2A6F89009C7B3C /* doLoop.BAS in Resources */,
-				D8A048211E29672200D186FC /* subs.BAS in Resources */,
-				D8425B911E2B9944009C7B3C /* GuessNumber.BAS_ in Resources */,
-				D8A0481F1E2966E600D186FC /* functions.BAS in Resources */,
-				D8425B8F1E2B8BA0009C7B3C /* selectCase.BAS in Resources */,
-				D89D54EC1E296189007D6F5B /* explicitTypes.BAS in Resources */,
-				D8C9A9CB1E294DD90010A0E1 /* print.BAS in Resources */,
-				D8A0481B1E2964B700D186FC /* if-for.BAS in Resources */,
-				D89D54EA1E296115007D6F5B /* implicitTypes.BAS in Resources */,
-				D82580C81E2957C000656CFA /* goto.BAS in Resources */,
-				D829A6C61E29634000F75E1F /* input.BAS in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		D8425B921E2D09D1009C7B3C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8425BB81E2D09E2009C7B3C /* Error.swift in Sources */,
+				D8425BB51E2D09E2009C7B3C /* Character.swift in Sources */,
+				D8425BB61E2D09E2009C7B3C /* Combinator.swift in Sources */,
+				D8425BB71E2D09E2009C7B3C /* Compatibility.swift in Sources */,
+				D8425BDC1E2D114F009C7B3C /* Helpers.swift in Sources */,
+				D8425BBB1E2D09E2009C7B3C /* String.swift in Sources */,
+				D8425BB91E2D09E2009C7B3C /* Primitive.swift in Sources */,
+				D8425BBD1E2D0A28009C7B3C /* Lexer.swift in Sources */,
+				D8425BBA1E2D09E2009C7B3C /* SourcePos.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8425BFF1E2D2DB3009C7B3C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8425C111E2D2DDF009C7B3C /* LexerTests.swift in Sources */,
+				D8425C121E2D2DDF009C7B3C /* QBasicCompilerTests.swift in Sources */,
+				D8425C331E2D3125009C7B3C /* TestCases.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D85E4E9D1E29373B00BDA30D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -354,28 +484,112 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D85E4EAB1E29373C00BDA30D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D85E4EB41E29373C00BDA30D /* QBasic2SwiftTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D85E4EB11E29373C00BDA30D /* PBXTargetDependency */ = {
+		D8425BAB1E2D09D1009C7B3C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D85E4EA01E29373B00BDA30D /* QBasic2Swift */;
-			targetProxy = D85E4EB01E29373C00BDA30D /* PBXContainerItemProxy */;
+			target = D8425B961E2D09D1009C7B3C /* QBasicCompiler */;
+			targetProxy = D8425BAA1E2D09D1009C7B3C /* PBXContainerItemProxy */;
+		};
+		D8425C0A1E2D2DB3009C7B3C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D8425B961E2D09D1009C7B3C /* QBasicCompiler */;
+			targetProxy = D8425C091E2D2DB3009C7B3C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		D8425BAE1E2D09D1009C7B3C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = X53G3KMVA6;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = QBasicCompiler/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.VojtaStavik.QBasicCompiler;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		D8425BAF1E2D09D1009C7B3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = X53G3KMVA6;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = QBasicCompiler/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.VojtaStavik.QBasicCompiler;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D8425C0C1E2D2DB3009C7B3C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = X53G3KMVA6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = QBasicCompilerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.VojtaStavik.QBasicCompilerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		D8425C0D1E2D2DB3009C7B3C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = X53G3KMVA6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = QBasicCompilerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.VojtaStavik.QBasicCompilerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 		D85E4EB61E29373C00BDA30D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -393,6 +607,7 @@
 		D85E4EB71E29373C00BDA30D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -403,51 +618,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
-			};
-			name = Release;
-		};
-		D85E4EB81E29373C00BDA30D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ENABLE_MODULES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = X53G3KMVA6;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-				);
-				INFOPLIST_FILE = QBasic2SwiftTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.VojtaStavik.QBasic2SwiftTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QBasic2Swift.app/Contents/MacOS/QBasic2Swift";
-			};
-			name = Debug;
-		};
-		D85E4EB91E29373C00BDA30D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ENABLE_MODULES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = X53G3KMVA6;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-				);
-				INFOPLIST_FILE = QBasic2SwiftTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.VojtaStavik.QBasic2SwiftTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QBasic2Swift.app/Contents/MacOS/QBasic2Swift";
 			};
 			name = Release;
 		};
@@ -542,20 +712,27 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		D8425BB21E2D09D1009C7B3C /* Build configuration list for PBXNativeTarget "QBasicCompiler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8425BAE1E2D09D1009C7B3C /* Debug */,
+				D8425BAF1E2D09D1009C7B3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D8425C0B1E2D2DB3009C7B3C /* Build configuration list for PBXNativeTarget "QBasicCompilerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8425C0C1E2D2DB3009C7B3C /* Debug */,
+				D8425C0D1E2D2DB3009C7B3C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		D85E4EBA1E29373C00BDA30D /* Build configuration list for PBXNativeTarget "QBasic2Swift" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D85E4EB61E29373C00BDA30D /* Debug */,
 				D85E4EB71E29373C00BDA30D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		D85E4EBB1E29373C00BDA30D /* Build configuration list for PBXNativeTarget "QBasic2SwiftTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D85E4EB81E29373C00BDA30D /* Debug */,
-				D85E4EB91E29373C00BDA30D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
